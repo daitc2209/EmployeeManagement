@@ -58,12 +58,12 @@ public class Users {
         this.password = password;
     }
 
-    public String getRole() {
+    public String getName() {
         return name;
     }
 
-    public void setRole(String role) {
-        this.name = role;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public boolean isActive() {

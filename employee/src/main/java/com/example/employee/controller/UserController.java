@@ -17,7 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/")
 //@CrossOrigin("http://localhost:5173/","http://127.0.0.1:5173")
-@CrossOrigin
+@CrossOrigin(origins = "*", allowedHeaders = "*", allowCredentials = "false")
 //@CrossOrigin("http://127.0.0.1:5173")
 public class UserController {
 
@@ -52,6 +52,7 @@ public class UserController {
     @PostMapping("/login")
     public String login(@RequestBody Users users) throws Exception{
         return userDetailsService.login(users.getEmail(), users.getPassword());
+
     }
 
     @GetMapping(value = "/userActive")

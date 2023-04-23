@@ -20,7 +20,9 @@ import java.util.List;
 @RequestMapping("/")
 //@CrossOrigin("http://localhost:5173/")
 //@CrossOrigin(origins = "http://localhost:5173")
-@CrossOrigin
+@CrossOrigin(origins = "*", allowedHeaders = "*",
+        methods = {RequestMethod.GET,RequestMethod.POST,RequestMethod.DELETE,RequestMethod.OPTIONS,RequestMethod.PUT,RequestMethod.HEAD}
+        ,allowCredentials = "false")
 
 public class EmployeeController {
     @Autowired
