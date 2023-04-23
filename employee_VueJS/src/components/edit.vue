@@ -99,7 +99,13 @@ export default {
     }
   },
   created() {
-    this.getEmployeesById(this.$route.params.id)
+    if(window.localStorage.getItem("User_email") != null)
+      this.getEmployeesById(this.$route.params.id)
+      else
+      {
+        this.$router.push("/")
+        alert("you must login!!")
+      }
   }
 }
 </script>

@@ -80,7 +80,11 @@ export default {
         }
     },
     created() {
-        // this.getEmployees()
+    if(window.localStorage.getItem("User_email") == null)
+      {
+        this.$router.push("/")
+        alert("you must login!!")
+      }
     }
 }
 </script>
