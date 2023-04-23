@@ -83,7 +83,7 @@ export default {
       }
       EmployeeService.update(this.Employee.id, dataa)
         .then(() => {
-          alert("saveddd");
+          alert("Edit successfully");
         })
         .catch(e => {
           alert("Please check your information")

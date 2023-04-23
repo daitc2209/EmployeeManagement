@@ -69,7 +69,7 @@ export default {
             console.log(this.User)
             Users.created1(this.User)
                 .then(() => {
-                    alert("saveddd");
+                    alert("Register successfully!!!");
                 })
                 .catch((err) => { console.log(err) })
 

@@ -72,7 +72,7 @@ export default {
             console.log(this.Employee)
             EmployeeService.create(this.Employee)
                 .then(() => {
-                    alert("saveddd");
+                    alert("Create new employee successfully");
                     this.$router.push({name: 'home'})
                 })
                 .catch((err) => { alert("Can't add new Employee") })
