@@ -1,7 +1,6 @@
 package com.example.employee.config;
 
 import com.example.employee.service.JwtService;
-import com.example.employee.service.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -62,45 +61,4 @@ public class JwtAuthFilter extends OncePerRequestFilter {
              }
              return null;
     }
-
-//    @Autowired
-//    private UserDetailsServiceImpl mUserDetailService;
-//
-//    @Autowired
-//    private JwtService jwtService;
-//
-//    @Override
-//    protected void doFilterInternal(
-//             HttpServletRequest request,
-//             HttpServletResponse response,
-//             FilterChain filterChain
-//    ) throws ServletException, IOException {
-//
-//        final String authHeader = request.getHeader("Authorization");
-//        final String jwt;
-//        final String userEmail;
-//        if (authHeader == null || !authHeader.startsWith("Bearer ")){
-//            filterChain.doFilter(request,response);
-//            return;
-//        }
-//        jwt = authHeader.substring(7);  // vì trừ 6 chữ trong Bearer và 1 dấu cách thành 7
-//        userEmail = jwtService.extractUsername(jwt);
-//        if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null){
-//
-//            UserDetails userDetails = this.mUserDetailService.loadUserByUsername(userEmail);
-//
-//            if(jwtService.isTokenValid(jwt,userDetails)){
-//                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-//                        userDetails,
-//                        null,
-//                        userDetails.getAuthorities()
-//                );
-//                authToken.setDetails(
-//                        new WebAuthenticationDetailsSource().buildDetails(request)
-//                );
-//                SecurityContextHolder.getContext().setAuthentication(authToken);
-//            }
-//        }
-//        filterChain.doFilter(request,response);
-//    }
 }

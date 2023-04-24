@@ -17,12 +17,7 @@
 
 <!--                 error message-->
                     <div v-if="error" class="alert alert-danger" role="alert">{{ error }}</div>
-                
-
-                <!-- logout message -->
-                <!-- <div if="">
-                    <div class="alert alert-info">You have been logged out.</div>
-                </div> -->
+               
 
                 <div class = "form-group">
                     <label for ="email"> Email </label> :
@@ -88,9 +83,6 @@ import Users from '../service/Users';
             
         }
     },
-    created() {
-        // this.getEmployees()
-    }
 }
 </script>
 

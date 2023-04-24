@@ -30,7 +30,6 @@ public class SecurityConfig {
 
 //    @Autowired
     private UserDetailsService userDetailsService;
-//    private final JwtAuthenticationFilter jwtAuthFilter;
 
     @Autowired
     private JwtAuthEntryPoint jwtAuthEntryPoint;
@@ -66,23 +65,6 @@ public class SecurityConfig {
         // Add JWT authentication filter
         http.addFilterBefore(jwtAuthFilter(), UsernamePasswordAuthenticationFilter.class);
 
-
-//        http
-//                .csrf()
-//                .disable()
-//                .authorizeHttpRequests()
-//                .requestMatchers("/v1/**")
-//                .permitAll()
-//                .anyRequest()
-//                .authenticated()
-//                .and()
-//                .sessionManagement()
-//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                .and()
-//                .authenticationProvider(authenticationProvider())
-//                .addFilterBefore(jwtAuthFilter(), UsernamePasswordAuthenticationFilter.class)
-//                ;
-
         return http.build();
     }
 
@@ -96,34 +78,5 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
-
-//    @Bean
-//    public UserDetailsService userDetailsService(){
-//           return new UserDetailsServiceImpl();
-//    }
-//
-//    @Bean
-//    public PasswordEncoder passwordEncoder(){
-//        return new BCryptPasswordEncoder();
-//    }
-//    @Bean
-//    public BCryptPasswordEncoder passwordEncoder(){
-//        return new BCryptPasswordEncoder();
-//    }
-
-//    @Bean
-//    public DaoAuthenticationProvider authenticationProvider() {
-//        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-//
-//        authProvider.setUserDetailsService(userDetailsService());
-//        authProvider.setPasswordEncoder(passwordEncoder());
-//
-//        return authProvider;
-//    }
-//
-//    @Bean
-//    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
-//        return authConfig.getAuthenticationManager();
-//    }
 
 }

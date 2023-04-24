@@ -19,24 +19,11 @@ public class EmployeeService {
     EmployeeRepository empRepository;   //tương tác với database
 
     //READ
-//    public List<Employee> getEmployees(String keyword) {
-//        if(keyword != null)
-//            return empRepository.findAll(keyword);
-//        return empRepository.findAll();
-//    }
-
     public List<Employee> getEmployees() {
         return empRepository.findEmployeeByEmailNotIsDelete();
     }
 
     //CREATE
-//    public void createEmp(Employee emp){
-//        Optional<Employee> empOptional = empRepository.findEmployeeByEmail(emp.getEmailId());
-//        if (empOptional.isPresent()){   //báo xem có tồn tại email trùng ko
-//            throw new IllegalStateException("email taken");
-//        }
-//        empRepository.save(emp);
-//    }
     public Employee createEmp(Employee emp){
         Optional<Employee> empOptional = empRepository.findEmployeeByEmail(emp.getemail_id());
         if (empOptional.isPresent()){   //báo xem có tồn tại email trùng ko
@@ -46,7 +33,6 @@ public class EmployeeService {
                 emp.getFirstName(),emp.getLastName(),emp.getemail_id(),emp.getDob(),emp.getAddress(),emp.isDelete()
         );
         System.out.println(employee.toString());
-//        return empRepository.save(emp);
         return empRepository.save(employee);
     }
 

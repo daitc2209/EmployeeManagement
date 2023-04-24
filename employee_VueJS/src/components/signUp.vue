@@ -1,20 +1,21 @@
 <template>
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="/">Sign Up</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-      </div>
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Sign Up</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
     </nav>
     <div class="container">
         <div class="row">
             <div class="col-md-6 col-md-offset-3">
 
                 <!-- success message -->
-                <!-- <div if="">
-        <div class="alert alert-info">You've successfully registered !</div>
-      </div> -->
+                <div v-if="mesage">
+                    <div class="alert alert-info">{{ mesage }}</div>
+                </div>
 
                 <h1>Registration</h1>
 
@@ -35,9 +36,6 @@
                             autofocus="autofocus" minlength="3" maxlength="20" />
                     </div>
                     <br>
-                    <!-- <div class="form-group" hidden>
-                        <input id="isActive" class="form-control" type="isActive" value="1" />
-                    </div> -->
                     <div class="form-group">
                         <button type="submit" class="btn btn-success" style="margin-right: 4px;">Register</button>
                         <span>Already registered? <a href="/">Login
@@ -58,6 +56,7 @@ export default {
                 email: '',
                 password: '',
                 name: '',
+                mesage: ''
             }
         }
     },
@@ -69,11 +68,12 @@ export default {
             console.log(this.User)
             Users.created1(this.User)
                 .then(() => {
+                    // this.mesage = "You've successfully registered !";
                     alert("Register successfully!!!");
                 })
                 .catch((err) => { console.log(err) })
 
-                this.$router.push({name: 'LoginView'})
+            this.$router.push({name: 'LoginView'})
         }
     },
     created() {

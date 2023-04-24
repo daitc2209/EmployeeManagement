@@ -35,7 +35,6 @@
           <td>{{ emp.address }}</td>
           <td>
             <a :href="'/edit/' + emp.id" class="btn btn-secondary" style="margin-left: 5px;">Edit</a>
-            <!-- @click="edit(emp.id)" -->
             <a @click="remove(emp.id)" class="btn btn-danger">Delete</a>
           </td>
         </tr>
@@ -66,14 +65,9 @@ export default {
         this.employees = res.data;
       }))
         .catch((err) => { console.log(err) });
-      // axios.get('employees').then((res) => {
-      //   console.log(res)
-      //   this.employees = res.data
-      // }).catch((err) => console.log(err)) 
     },
 
     remove(emp) {
-      // console.log(emp)
       EmployeeService.remove(emp).then(() => {
         alert("Deleteddd");
         this.getEmployees()

@@ -17,8 +17,8 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     @Query("SELECT e from Employee e where e.isDelete=false ")
     List<Employee> findEmployeeByEmailNotIsDelete();
 
-    @Query("SELECT e from Employee e where concat(e.firstName, e.lastName, e.email_id, e.address) like %?1% ")
-    public List<Employee> findAll(String keyword);
+//    @Query("SELECT e from Employee e where concat(e.firstName, e.lastName, e.email_id, e.address) like %?1% ")
+//    public List<Employee> findAll(String keyword);
 
     @Query("SELECT e from Employee e where e.id= ?1")
     Employee findUserById(Long id);
