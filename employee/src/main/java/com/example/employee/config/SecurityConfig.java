@@ -28,9 +28,6 @@ import java.util.Arrays;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-//    @Autowired
-    private UserDetailsService userDetailsService;
-
     @Autowired
     private JwtAuthEntryPoint jwtAuthEntryPoint;
 

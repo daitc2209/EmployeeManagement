@@ -53,7 +53,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 import Users from '../service/Users';
     export default {
         data() {

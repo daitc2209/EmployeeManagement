@@ -8,7 +8,7 @@ import java.security.Key;
 import java.util.Date;
 
 @Service
-public class JwtService {
+public class JwtProvider {
 
     //private static final String SECRET_KEY = "2948404D6251655468576D5A7134743777217A25432A462D4A614E645266556A";
     private String jwtSecret = "sIoVC8OFOgmxbk9XRYtY2zMKXuYXBGL2d3x1IV37";

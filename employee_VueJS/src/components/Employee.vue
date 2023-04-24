@@ -44,7 +44,6 @@
 </template>
   
 <script>
-import axios from 'axios';
 import Header from './Header.vue'
 import EmployeeService from '../service/EmployeeService'
 export default {

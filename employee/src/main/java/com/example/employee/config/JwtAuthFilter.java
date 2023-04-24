@@ -1,6 +1,6 @@
 package com.example.employee.config;
 
-import com.example.employee.service.JwtService;
+import com.example.employee.service.JwtProvider;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,7 +20,7 @@ import java.io.IOException;
 
 public class JwtAuthFilter extends OncePerRequestFilter {
     @Autowired
-    private JwtService jwtService;
+    private JwtProvider jwtProvider;
     @Autowired
     private UserDetailsService userDetailsService;
 
@@ -30,10 +30,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
      // Get token from request
      String token = getTokenFromRequest(request);
      // Validate token using JWT provider
-     if(token != null && jwtService.validateToken(token)) {
+     if(token != null && jwtProvider.validateToken(token)) {
 
      // Get username from token
-     String username = jwtService.getUsernameFromToken(token);
+     String username = jwtProvider.getUsernameFromToken(token);
 
      // Get user details
      UserDetails userDetails = userDetailsService.loadUserByUsername(username);
@@ -52,7 +52,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
      private String getTokenFromRequest(HttpServletRequest request) {
      // Extract authentication header
-             var authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+             var authHeader = request.getHeader(HttpHeaders.AUTHORIZATION); //lấy Authentication trong request gửi đến
              // Bearer {JWT}
 
              // Check whether it starts with `Bearer ` or not

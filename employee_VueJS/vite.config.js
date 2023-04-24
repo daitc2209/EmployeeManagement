@@ -36,14 +36,3 @@ export default defineConfig({
   // }
 })
 
-// module.exports = {
-//   devServer: {
-//     proxy: {
-//       '^/employees': {
-//         target: 'http://localhost:8080/',
-//         ws: true,
-//         changeOrigin: true
-//       },
-//     }
-//   }
-// }
