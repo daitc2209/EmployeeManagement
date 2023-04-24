@@ -20,7 +20,7 @@
 
                 <form @submit="save">
                     <div class="form-group">
-                        <label class="control-label" for="role"> Name </label>
+                        <label class="control-label" for="role"> Full name </label>
                         <input id="name" class="form-control" v-model="User.name" autofocus="autofocus" />
                     </div>
                     <br>

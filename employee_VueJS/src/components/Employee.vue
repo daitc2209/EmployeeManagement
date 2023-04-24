@@ -34,7 +34,7 @@
           <td>{{ emp.dob }}</td>
           <td>{{ emp.address }}</td>
           <td>
-            <a :href="'/edit/' + emp.id" class="btn btn-secondary">Edit</a>
+            <a :href="'/edit/' + emp.id" class="btn btn-secondary" style="margin-left: 5px;">Edit</a>
             <!-- @click="edit(emp.id)" -->
             <a @click="remove(emp.id)" class="btn btn-danger">Delete</a>
           </td>

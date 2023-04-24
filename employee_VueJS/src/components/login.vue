@@ -47,6 +47,7 @@
                 </div>
                 
             </form>
+            <br>
             <div class="form-group">
 						<span>New user? <a href="/register">Register
 								here</a></span>
