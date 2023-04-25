@@ -8,12 +8,12 @@ import java.security.Key;
 import java.util.Date;
 
 @Service
-public class JwtProvider {
+public class JwtService {
 
     //private static final String SECRET_KEY = "2948404D6251655468576D5A7134743777217A25432A462D4A614E645266556A";
     private String jwtSecret = "sIoVC8OFOgmxbk9XRYtY2zMKXuYXBGL2d3x1IV37";
 
-    private Claims parseToken(String token) {
+    private Claims parseToken(String token) {   //giải mã chuỗi Token
         // Create JwtParser
         JwtParser jwtParser = Jwts.parserBuilder()
                 .setSigningKey(jwtSecret.getBytes())
@@ -21,7 +21,9 @@ public class JwtProvider {
 
         try {
             return jwtParser.parseClaimsJws(token)
-                    .getBody();
+                    .getBody(); //nếu không có lỗi, nó sẽ trả về
+                                // đối tượng chứa các thông tin về người dùng được giải mã từ token
+
         } catch (ExpiredJwtException e) {
             System.out.println(e.getMessage());
         } catch (UnsupportedJwtException e) {
@@ -34,7 +36,7 @@ public class JwtProvider {
             System.out.println(e.getMessage());
         }
 
-        return null;
+        return null;    //nếu có lỗi, nó sẽ trả về null
     }
 
     public boolean validateToken(String token) {
@@ -57,12 +59,14 @@ public class JwtProvider {
         Key key = Keys.hmacShaKeyFor(jwtSecret.getBytes());
 
         // Generate token
-        var currentDate = new Date(System.currentTimeMillis() + (1 * 60 * 10000));
-        var expiration = new Date(System.currentTimeMillis() + (100 * 60 * 10000));
+        var currentDate = new Date(System.currentTimeMillis() );
+//        var BeforeTime = new Date(System.currentTimeMillis() + (1 * 60 * 10000));
+        var expiration = new Date(System.currentTimeMillis() + (100 * 60 * 10000)); // hết hạn sau khoảng 1 ngày
 
         return Jwts.builder()
                 .setSubject(email)
                 .setIssuedAt(currentDate)
+//                .setNotBefore(BeforeTime)
                 .setExpiration(expiration)
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();

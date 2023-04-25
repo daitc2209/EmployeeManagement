@@ -1,7 +1,7 @@
 package com.example.employee.controller;
 
 import com.example.employee.model.Users;
-import com.example.employee.service.JwtProvider;
+import com.example.employee.service.JwtService;
 import com.example.employee.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,7 +19,7 @@ public class UserController {
     private UserDetailsServiceImpl userDetailsService;
 
     @Autowired
-    private JwtProvider jwtProvider;
+    private JwtService jwtService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -31,7 +31,7 @@ public class UserController {
         System.out.println(userDetails);
         if(passwordEncoder.matches(authRequest.getPassword(), userDetails.getPassword())){
             // Generate token
-            return jwtProvider.generateToken(authRequest.getEmail());
+            return jwtService.generateToken(authRequest.getEmail());
         }
 
         throw new Exception("Email details invalid.");

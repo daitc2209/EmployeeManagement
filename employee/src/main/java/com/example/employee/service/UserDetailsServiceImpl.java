@@ -22,7 +22,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private UserRepository userRep;
     @Autowired
-    private JwtProvider jwtProvider;
+    private JwtService jwtService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -38,39 +38,38 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return new User(user.getEmail(), user.getPassword(),new ArrayList<>());
     }
 
-                public Users createUser(Users user) throws Exception {
-                    // Check whether username exists or not
-                    Optional<Users> userOptional = userRep.findUserByEmail(user.getEmail());
+    public Users createUser(Users user) throws Exception {
+        // Check whether username exists or not
+        Optional<Users> userOptional = userRep.findUserByEmail(user.getEmail());
 
-                    if (userOptional.isPresent()) {
-                        throw new IllegalStateException("email taken");
-                    }
+        if (userOptional.isPresent()) {
+            throw new IllegalStateException("email taken");
+        }
 
-                    user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-                    System.out.println(user.toString());
-                    user.setActive(true);
-                    // Save user
-                    return userRep.save(user);
-                }
+        user.setActive(true);
+        // Save user
+        return userRep.save(user);
+    }
 
-                public String login(String email, String password) throws Exception {
-//                    Users user = userRep.findUserByEmail1(email);
-                    var user = userRep.findUserByEmail(email)
-                            .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email not found"));
+    public String login(String email, String password) throws Exception {
+//  Users user = userRep.findUserByEmail1(email);
+        var user = userRep.findUserByEmail(email)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email not found"));
 
-                    System.out.println(user);
-                    if(user.isActive()) {
-                        if (passwordEncoder.matches(password, user.getPassword())) {
-                            return jwtProvider.generateToken(user.getEmail());
-                        }
-                        throw new Exception("Email details invalid.");
-                    }
-                    throw new Exception("Email has disactived.");
+        System.out.println(user);
+        if(user.isActive()) {
+            if (passwordEncoder.matches(password, user.getPassword())) {
+                return jwtService.generateToken(user.getEmail());
+            }
+            throw new Exception("Email details invalid.");
+        }
+        throw new Exception("Email has disactived.");
 
-                }
+    }
 
-                public List<Users> getUserActive(){
+    public List<Users> getUserActive(){
                     return userRep.findAll();
                 }
 }
