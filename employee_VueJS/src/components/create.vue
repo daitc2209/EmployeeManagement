@@ -38,7 +38,7 @@
                         </div>
                         <br>
                         <div class="box-footer">
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" class="btn btn-primary" style="margin-right: 5px;">Submit</button>
                             <a href="/home" class="btn btn-info">Cancel</a>
                         </div>
                     </form>
@@ -72,11 +72,10 @@ export default {
             console.log(this.Employee)
             EmployeeService.create(this.Employee)
                 .then(() => {
-                    alert("Create new employee successfully");
+                    sessionStorage.setItem("message1",true)
                     this.$router.push({name: 'home'})
                 })
                 .catch((err) => { alert("Can't add new Employee") })
-            
         }
     },
     created() {

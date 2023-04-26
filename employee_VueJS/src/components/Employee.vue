@@ -14,6 +14,9 @@
       <a class="btn btn-danger" style="margin-left: 10px" @click="logout" href="/">Logout</a>
     </div>
     <!-- <h1 class="text-center">Employees List</h1> -->
+
+    <div class="alert alert-info" role="alert" v-bind:style="{display}">{{ message }}</div>
+
     <table class="table">
       <thead>
         <tr>
@@ -34,7 +37,7 @@
           <td>{{ emp.dob }}</td>
           <td>{{ emp.address }}</td>
           <td>
-            <a :href="'/edit/' + emp.id" class="btn btn-secondary" style="margin-left: 5px;">Edit</a>
+            <a :href="'/edit/' + emp.id" class="btn btn-secondary" style="margin-right: 5px;">Edit</a>
             <a @click="remove(emp.id)" class="btn btn-danger">Delete</a>
           </td>
         </tr>
@@ -55,10 +58,13 @@ export default {
     return {
       employees: [],
       UserEmail: window.localStorage.getItem("User_email"),
+      display:'none',
+      message:''
     }
   },
   methods: {
     getEmployees() {
+      this.$router.push("/home")
       EmployeeService.getEmployees().then((res => {
         console.log(res)
         this.employees = res.data;
@@ -88,7 +94,26 @@ export default {
         alert("you must login!!")
       }
 
+      if(sessionStorage.getItem("message"))
+      {
+        this.display = 'block',
+        this.message = 'Edit successfully !!!'
+        sessionStorage.removeItem("message")
+      }
+      if(sessionStorage.getItem("message1"))
+      {
+        this.display = 'block',
+        this.message = 'Create successfully !!!'
+        sessionStorage.removeItem("message1")
+      }
+      if(sessionStorage.getItem("message2"))
+      {
+        this.display = 'block',
+        this.message = 'Login successfully !!! Please press F5 to render info'
+        sessionStorage.removeItem("message2")
+      }
   }
+
 }
 </script>
   

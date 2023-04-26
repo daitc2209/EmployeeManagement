@@ -39,7 +39,7 @@
             </div>
             <br>
             <div class="box-footer">
-              <button type="submit" class="btn btn-primary">Save</button>
+              <button type="submit" class="btn btn-primary" style="margin-right:5px ;">Save</button>
               <a href="/home" class="btn btn-info">Cancel</a>
             </div>
           </form>
@@ -73,6 +73,7 @@ export default {
     update() {
       this.updateData();
     },
+    
     updateData() {
       var dataa = {
         firstName: this.Employee.firstName,
@@ -83,13 +84,15 @@ export default {
       }
       EmployeeService.update(this.Employee.id, dataa)
         .then(() => {
-          alert("Edit successfully");
+          sessionStorage.setItem("message",true);
+          alert("Edit successfully!!! Please press F5");
         })
         .catch(e => {
           alert("Please check your information")
         });
       this.$router.push({ name: 'home' })
     },
+
     getEmployeesById(id) {
       EmployeeService.getEmployeesById(id)
         .then(res => {

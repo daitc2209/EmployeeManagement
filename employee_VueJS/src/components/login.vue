@@ -16,8 +16,7 @@
             <form @submit.prevent="login">
 
 <!--                 error message-->
-                    <div v-if="error" class="alert alert-danger" role="alert">{{ error }}</div>
-               
+                    <div class="alert alert-danger" role="alert" v-bind:style="{display}">{{ error }}</div>
 
                 <div class = "form-group">
                     <label for ="email"> Email </label> :
@@ -61,8 +60,9 @@ import Users from '../service/Users';
                 email: '',
                 password: '',
                 role: '',
-                error:'',
-            }
+            },
+            error:'',
+            display: 'none'
         }
     },
     methods: {
@@ -75,13 +75,15 @@ import Users from '../service/Users';
                         window.localStorage.clear();
                         window.localStorage.setItem("jwtToken", res.data);
                         window.localStorage.setItem("User_email", this.User.email);
+                        sessionStorage.setItem("message2",true)
                         this.$router.push("/home")
                     }
                 })
-                .catch((err) => { this.error = 'Invaild username/password'; alert("Invaild username/password or username is deactived") })
-            
+                .catch((err) => { this.error = 'Invaild username/password'; this.display="block"; })
         }
     },
+    created(){
+    }
 }
 </script>
 

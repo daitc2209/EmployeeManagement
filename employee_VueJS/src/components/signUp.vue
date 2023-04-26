@@ -75,9 +75,6 @@ export default {
 
             this.$router.push({name: 'LoginView'})
         }
-    },
-    created() {
-        // this.getEmployees()
     }
 }
 </script>
