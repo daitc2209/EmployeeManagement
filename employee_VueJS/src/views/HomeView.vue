@@ -1,13 +1,13 @@
 <script>
-import Employee from '../components/Employee.vue'
+import RenderEmployee from '../components/RenderEmployee.vue'
 export default {
   name:"App",
   components: {
-    Employee
+    RenderEmployee
   }
 }
 </script>
 
 <template>
-    <Employee/>
+    <RenderEmployee/>
 </template>

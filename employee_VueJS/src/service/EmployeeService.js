@@ -1,6 +1,9 @@
 
-import {privateAuth} from './auth'
+import {publicAuth,privateAuth} from './auth'
 class EmployeeService{
+    login(data){
+        return publicAuth.post('employees/loginEmp',data)
+    }
     getEmployees(){
         return privateAuth.get('employees')
     }
@@ -8,13 +11,13 @@ class EmployeeService{
         return privateAuth.get(`employees/edit/${id}`)
     }
     create(data){
-        return privateAuth.post('employees',data) 
+        return publicAuth.post('employees/createEmp',data) 
     }
     update(id, data){
         return privateAuth.put(`employees/${id}`,data)
     }
     remove(id){
-        return privateAuth.delete(`/employees/delete/${id}`)
+        return privateAuth.delete(`employees/delete/${id}`)
     }
     
 }

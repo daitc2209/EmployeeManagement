@@ -14,6 +14,9 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     @Query("SELECT e from Employee e where e.email_id= ?1")
     Optional<Employee> findEmployeeByEmail(String email);
 
+    @Query("SELECT e from Employee e where e.email_id= ?1")
+    Employee findEmployeeByEmail1(String email);
+
     @Query("SELECT e from Employee e where e.isDelete=false ")
     List<Employee> findEmployeeByEmailNotIsDelete();
 

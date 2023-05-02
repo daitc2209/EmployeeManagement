@@ -21,17 +21,22 @@ public class Users {
     @Column(name= "isActive", nullable = false)
     private boolean isActive;
 
-//    @Enumerated(EnumType.STRING)
-//    protected Role role;
+    @Column(name= "isDelete", nullable = false)
+    private boolean isDelete;
+
+    @Column(name= "role", nullable = false)
+    private String role;
 
     public Users() {
     }
 
-    public Users(String email, String password, String name, boolean isActive) {
+    public Users(String email, String password, String name, String role) {
         this.email = email;
         this.password = password;
         this.name = name;
-        this.isActive = isActive;
+        this.isActive = true;
+        this.isDelete = false;
+        this.role = role;
     }
 
     public Long getId() {
@@ -54,6 +59,14 @@ public class Users {
         return password;
     }
 
+    public boolean isDelete() {
+        return isDelete;
+    }
+
+    public void setDelete(boolean delete) {
+        isDelete = delete;
+    }
+
     public void setPassword(String password) {
         this.password = password;
     }
@@ -74,6 +87,14 @@ public class Users {
         isActive = active;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -81,6 +102,8 @@ public class Users {
                 ", password='" + password + '\'' +
                 ", name='" + name + '\'' +
                 ", isActive='" + isActive + '\'' +
+                ", isDelete='" + isDelete + '\'' +
+                ", role='" + role + '\'' +
                 '}';
     }
 }

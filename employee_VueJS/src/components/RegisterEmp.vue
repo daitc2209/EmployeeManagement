@@ -1,10 +1,17 @@
 
 <template>
-    <Header/>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="/">Register</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </div>
+    </nav>
     <div class="container">
         <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
-                <h1 class="text-center">Create new Employee</h1>
+                <h1 class="text-center">Register</h1>
                 <div class="card-body">
                     <form @submit.prevent="saveData">
                         <div class="form-group">
@@ -26,6 +33,12 @@
                         </div>
                         <br>
                         <div class="form-group">
+                            <label>Password: </label>
+                            <input type="text" v-model="Employee.password" name="password" class="form-control" required
+                                placeholder="Enter password...">
+                        </div>
+                        <br>
+                        <div class="form-group">
                             <label>Date of birth: </label>
                             <input type="text" v-model="Employee.dob" name="dob" class="form-control" required
                                 placeholder="Enter Date of birth: YYYY-MM-DD...">
@@ -38,8 +51,8 @@
                         </div>
                         <br>
                         <div class="box-footer">
-                            <button type="submit" class="btn btn-primary" style="margin-right: 5px;">Submit</button>
-                            <a href="/home" class="btn btn-info">Cancel</a>
+                            <button type="submit" class="btn btn-primary" style="margin-right: 5px;">Register</button>
+                            <a href="/loginEmp" class="btn btn-info">Cancel</a>
                         </div>
                     </form>
                 </div>
@@ -62,6 +75,7 @@ export default {
                 firstName: '',
                 lastName: '',
                 email_id: '',
+                password: '',
                 dob: '',
                 address: ''
             }
@@ -73,17 +87,13 @@ export default {
             EmployeeService.create(this.Employee)
                 .then(() => {
                     sessionStorage.setItem("message1",true)
-                    this.$router.push({name: 'home'})
+                    alert("Register successfully!!")
+                    this.$router.push("/loginEmp")
                 })
                 .catch((err) => { alert("Can't add new Employee") })
         }
     },
     created() {
-    if(window.localStorage.getItem("User_email") == null)
-      {
-        this.$router.push("/")
-        alert("you must login!!")
-      }
     }
 }
 </script>

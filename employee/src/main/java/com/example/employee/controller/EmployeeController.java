@@ -1,11 +1,13 @@
 package com.example.employee.controller;
 
+import com.example.employee.model.Users;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +18,7 @@ import com.example.employee.service.EmployeeService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/api/employees")
 @CrossOrigin(origins = "*", allowedHeaders = "*",
         methods = {RequestMethod.GET,RequestMethod.POST,RequestMethod.DELETE,RequestMethod.OPTIONS,RequestMethod.PUT,RequestMethod.HEAD}
         ,allowCredentials = "false")
@@ -26,13 +28,19 @@ public class EmployeeController {
     private EmployeeService empService;
 
     //Render data
-    @GetMapping(value = "/employees")
+    @GetMapping
     public List<Employee> getEmployee(){
         return empService.getEmployees();
     }
 
+    @PostMapping("/loginEmp")
+    public String login(@RequestBody Employee emp) throws Exception{
+        System.out.println("Email: "+ emp.getemail_id() + " password: " + emp.getPassword());
+        return empService.login(emp.getemail_id(), emp.getPassword());
+    }
+
     //Create
-    @PostMapping(value = "/employees")
+    @PostMapping(value = "/createEmp")
     public Employee createEmployee(@RequestBody Employee emp){
         // ModelAttribute đóng vai trò là cầu lối giữa controller và View
         return empService.createEmp(emp);
@@ -40,12 +48,12 @@ public class EmployeeController {
 
 
     //Update
-    @GetMapping("/employees/edit/{id}")
+    @GetMapping("/edit/{id}")
     public Employee editEmpForm(@PathVariable(value = "id") Long id){
             return empService.getEmpById(id);
     }
 
-    @PutMapping("/employees/{id}")
+    @PutMapping("/{id}")
     public Employee updateEmp(@PathVariable(value = "id") Long id,
                               @RequestBody Employee emp){
 
@@ -68,7 +76,7 @@ public class EmployeeController {
     }
 
     //Delete database
-    @DeleteMapping("/employees/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteEmployee(@PathVariable(value="id") Long id){
         empService.deleteEmp(id);
 //        return new ResponseEntity<>("Xóa thành công", responseHeaders, HttpStatus.OK);

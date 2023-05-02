@@ -34,30 +34,43 @@ public class Employee {
     @Column(name = "address")
     private String address;
 
+    @Column(name = "password")
+    private String password;
+
     @Column(name = "isDelete")
     boolean isDelete;
+
+    @Column(name = "isActive")
+    boolean isActive;
 
     public Employee() {
     }
 
     public Employee(Long id, String firstName, String lastName,
-                    String email_id, LocalDate dob, String address, boolean isDelete) {
+                    String email_id, LocalDate dob,
+                    String address, boolean isDelete,boolean isActive,String password) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email_id = email_id;
         this.dob = dob;
         this.address=address;
+        this.password=password;
         this.isDelete=isDelete;
+        this.isActive=isActive;
     }
 
-    public Employee(String firstName, String lastName, String email_id, LocalDate dob, String address,boolean isDelete) {
+    public Employee(String firstName, String lastName,
+                    String email_id, LocalDate dob, String address,
+                    boolean isDelete,boolean isActive,String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email_id = email_id;
         this.dob = dob;
         this.address=address;
+        this.password=password;
         this.isDelete=isDelete;
+        this.isActive=isActive;
 
     }
 
@@ -117,12 +130,28 @@ public class Employee {
         this.address = address;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public boolean isDelete() {
         return isDelete;
     }
 
     public void setDelete(boolean delete) {
         isDelete = delete;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 
     @Override
@@ -135,7 +164,9 @@ public class Employee {
                 ", age=" + age +
                 ", dob=" + dob +
                 ", address='" + address + '\'' +
+                ", password='" + password + '\'' +
                 ", isDelete='" + isDelete + '\'' +
+                ", isActive='" + isActive + '\'' +
                 '}';
     }
 }

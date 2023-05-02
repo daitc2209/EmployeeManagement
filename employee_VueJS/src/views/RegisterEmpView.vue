@@ -1,16 +1,16 @@
 <script>
 import { RouterLink, RouterView } from 'vue-router'
-import create from '../components/create.vue'
+import RegisterEmp from '../components/RegisterEmp.vue'
 export default {
-   name:"CreateView",
+   name:"RegisterEmpView",
     components: {
-    create
+    RegisterEmp
   }
 }
 </script>
 
 <template>
-    <create/>
+    <RegisterEmp/>
 </template>
 
 <style>

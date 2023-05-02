@@ -1,10 +1,13 @@
 package com.example.employee.service;
 
 //import com.example.employee.model.MUserDetail;
+import com.example.employee.model.Employee;
 import com.example.employee.model.Users;
 import com.example.employee.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -32,10 +35,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         Users user = userRep.findUserByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException(email + " not found"));
 
-//        var authorities = new ArrayList<GrantedAuthority>();
-//        authorities.add(new SimpleGrantedAuthority(user.getRole()));
-
-        return new User(user.getEmail(), user.getPassword(),new ArrayList<>());
+        var authorities = new ArrayList<GrantedAuthority>();
+        authorities.add(new SimpleGrantedAuthority(user.getRole()));
+        System.out.println("Author: " + authorities );
+        return new User(user.getEmail(), user.getPassword(),authorities);
     }
 
     public Users createUser(Users user) throws Exception {
@@ -47,8 +50,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-
-        user.setActive(true);
+        if (user.getRole() == null || user.getRole() == "")
+            user.setRole("ROLE_USER");
+//        if (user.isActive() == false)
+//            user.setActive(true);
         // Save user
         return userRep.save(user);
     }
@@ -57,7 +62,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 //  Users user = userRep.findUserByEmail1(email);
         var user = userRep.findUserByEmail(email)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email not found"));
-
         System.out.println(user);
         if(user.isActive()) {
             if (passwordEncoder.matches(password, user.getPassword())) {
@@ -72,4 +76,27 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public List<Users> getUserActive(){
                     return userRep.findAll();
                 }
+
+    public void deleteUser(Long id) {
+        boolean exists = userRep.existsById(id);
+        if (!exists) {
+            throw new IllegalStateException("employee with id " + id + " doesn't exists");
+        }
+        var u = userRep.findById(id).get();
+        u.setActive(false);
+        u.setDelete(true);
+        userRep.save(u);
+    }
+
+
+    public Users getUserById(Long id)
+    {
+        return userRep.findById(id).get();
+    }
+
+    public Users updateUser(Users u){
+        return userRep.save(u);
+    }
+
+    public Users getUserByEmail(String email){ return userRep.findUserByEmail(email).get();}
 }

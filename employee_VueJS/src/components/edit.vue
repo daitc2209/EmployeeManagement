@@ -102,7 +102,7 @@ export default {
     }
   },
   created() {
-    if(window.localStorage.getItem("User_email") != null)
+    if(sessionStorage.getItem("User_email") != null)
       this.getEmployeesById(this.$route.params.id)
       else
       {

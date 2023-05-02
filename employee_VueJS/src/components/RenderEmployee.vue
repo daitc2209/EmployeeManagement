@@ -5,17 +5,17 @@
       <div class="me-auto p-2 bd-highlight">
         <h2>Employees List</h2>
       </div>
-      <div class="p-2 bd-highlight" style="display: flex;">
-        <a href="/create" class="btn btn-primary">Create</a>
-      </div>
     </div>
     <div class="d-flex mb-3">
       <h6 class="display-6 text-center" style="font-size: 24px">Welcome {{ UserEmail }}</h6>
       <a class="btn btn-danger" style="margin-left: 10px" @click="logout" href="/">Logout</a>
     </div>
+    <h6 class="display-6 " style="font-size: 24px">Role: {{ role }}</h6>
     <!-- <h1 class="text-center">Employees List</h1> -->
 
     <div class="alert alert-info" role="alert" v-bind:style="{display}">{{ message }}</div>
+
+    <div v-if="role === 'ROLE_ADMIN'"><a href="/homeAdmin" style="font-size: 24px"> <b>List User</b></a></div>
 
     <table class="table">
       <thead>
@@ -26,6 +26,7 @@
           <th scope="col">Age</th>
           <th scope="col">Date of birth</th>
           <th scope="col">Address</th>
+          <th scope="col">Active</th>
         </tr>
       </thead>
       <tbody class="table-group-divider">
@@ -36,6 +37,7 @@
           <td>{{ emp.age }}</td>
           <td>{{ emp.dob }}</td>
           <td>{{ emp.address }}</td>
+          <td>{{ emp.active }}</td>
           <td>
             <a :href="'/edit/' + emp.id" class="btn btn-secondary" style="margin-right: 5px;">Edit</a>
             <a @click="remove(emp.id)" class="btn btn-danger">Delete</a>
@@ -57,9 +59,10 @@ export default {
   data() {
     return {
       employees: [],
-      UserEmail: window.localStorage.getItem("User_email"),
+      UserEmail: sessionStorage.getItem("User_email"),
       display:'none',
-      message:''
+      message:'',
+      role: sessionStorage.getItem("role")
     }
   },
   methods: {
@@ -81,12 +84,12 @@ export default {
     },
 
     logout() {
-      window.localStorage.removeItem("jwtToken");
-      window.localStorage.removeItem("User_email");
+      sessionStorage.removeItem("jwtToken");
+      sessionStorage.removeItem("User_email");
     }
   },
   created() {
-    if(window.localStorage.getItem("User_email") != null)
+    if(sessionStorage.getItem("User_email") != null)
       this.getEmployees()
       else
       {

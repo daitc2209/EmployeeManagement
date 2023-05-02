@@ -4,7 +4,10 @@ import com.example.employee.model.Employee;
 import com.example.employee.repository.EmployeeRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -18,9 +21,31 @@ public class EmployeeService {
     @Autowired
     EmployeeRepository empRepository;   //tương tác với database
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private JwtService jwtService;
+
     //READ
     public List<Employee> getEmployees() {
         return empRepository.findEmployeeByEmailNotIsDelete();
+    }
+
+    //Login
+    public String login(String email, String password) throws Exception {
+        Employee emp = empRepository.findEmployeeByEmail1(email);
+        if (emp == null){   //báo xem có tồn tại email trùng ko
+            throw new IllegalStateException("email not exist");
+        }
+        if(emp.isActive()) {
+            if (passwordEncoder.matches(password, emp.getPassword())) {
+                return jwtService.generateToken(emp.getemail_id());
+            }
+            throw new Exception("Email details invalid.");
+        }
+        throw new Exception("Email has disactived.");
+
     }
 
     //CREATE
@@ -29,11 +54,11 @@ public class EmployeeService {
         if (empOptional.isPresent()){   //báo xem có tồn tại email trùng ko
             throw new IllegalStateException("email taken");
         }
-        Employee employee = new Employee(
-                emp.getFirstName(),emp.getLastName(),emp.getemail_id(),emp.getDob(),emp.getAddress(),emp.isDelete()
-        );
-        System.out.println(employee.toString());
-        return empRepository.save(employee);
+        emp.setDelete(false);
+        emp.setActive(true);
+        emp.setPassword(passwordEncoder.encode(emp.getPassword()));
+        System.out.println(emp.toString());
+        return empRepository.save(emp);
     }
 
     //DELETE
@@ -43,6 +68,7 @@ public class EmployeeService {
             throw new IllegalStateException("employee with id " + empId + " doesn't exists");
         }
         Employee emp = empRepository.findUserById(empId);
+        emp.setActive(false);
         emp.setDelete(true);
         empRepository.save(emp);
     }
