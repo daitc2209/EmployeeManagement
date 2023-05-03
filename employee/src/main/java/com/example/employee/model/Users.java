@@ -12,8 +12,8 @@ public class Users {
     private Long id;
     @Column(name = "email", unique = true, nullable = false, length = 45)
     private String email;
-    @Column(name = "password", nullable = false, length = 45)
 //    @JsonIgnore
+    @Column(name = "password", nullable = false, length = 45)
     private String password;
     @Column(name = "name", nullable = false, length = 45)
     private String name;
@@ -24,7 +24,7 @@ public class Users {
     @Column(name= "isDelete", nullable = false)
     private boolean isDelete;
 
-    @Column(name= "role", nullable = false)
+    @Column(name= "role", nullable = false, length = 45)
     private String role;
 
     public Users() {

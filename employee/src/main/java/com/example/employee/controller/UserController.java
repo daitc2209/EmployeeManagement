@@ -6,6 +6,7 @@ import com.example.employee.service.JwtService;
 import com.example.employee.service.UserDetailsServiceImpl;
 import org.aspectj.weaver.ast.Var;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -43,15 +44,21 @@ public class UserController {
     }
 
     //READ
-    @GetMapping(value = "/userActive")
-    public List<Users> getUserActive(){
-        return userDetailsService.getUserActive();
+    @GetMapping(value = "/getuser")
+    public List<Users> getUser(){
+        return userDetailsService.getUser();
     }
 
 
     //DELETE
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Map<String, String>> deleteUser(@PathVariable(value="id") Long id){
+        if (userDetailsService.getUserById(id) == null)
+        {
+            Map<String,String> errorMap = new HashMap<>();
+            errorMap.put("error", "Không tìm thấy id để xóa!");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMap);
+        }
         userDetailsService.deleteUser(id);
         Map<String,String> map = new HashMap<>();
         map.put("message","Xóa dữ liệu thành công!");
@@ -75,9 +82,12 @@ public class UserController {
             throw new IllegalStateException("User doesn't exits");
         }
         else {
-            existUser.setName(u.getName());
-            existUser.setEmail(u.getEmail());
-            existUser.setRole(u.getRole());
+            if(u.getName() != null && u.getName() != "")
+                existUser.setName(u.getName());
+            if(u.getEmail() != null && u.getEmail() != "")
+                existUser.setEmail(u.getEmail());
+            if(u.getRole() != null && u.getRole() != "")
+                existUser.setRole(u.getRole());
             existUser.setActive(u.isActive());
 
             return userDetailsService.updateUser(existUser);

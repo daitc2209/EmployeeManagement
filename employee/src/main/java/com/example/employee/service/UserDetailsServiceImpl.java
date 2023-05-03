@@ -72,7 +72,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     }
 
-    public List<Users> getUserActive(){
+    public List<Users> getUser(){
                     return userRep.findAll();
                 }
 
@@ -94,7 +94,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     public Users getUserById(Long id)
     {
-        return userRep.findById(id).get();
+        if (userRep.findById(id).isPresent())
+            return userRep.findById(id).get();
+        return null;
     }
 
     public Users updateUser(Users u){

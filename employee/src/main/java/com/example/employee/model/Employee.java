@@ -1,6 +1,7 @@
 package com.example.employee.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -34,6 +35,7 @@ public class Employee {
     @Column(name = "address")
     private String address;
 
+//    @JsonIgnore
     @Column(name = "password")
     private String password;
 
