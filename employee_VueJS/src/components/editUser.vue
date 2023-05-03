@@ -101,7 +101,7 @@ export default {
         .catch(e => console.log(e));
     }
   },
-  created() {
+  mounted() {
     if(sessionStorage.getItem("User_email") != null){
       if(sessionStorage.getItem("role")=="ROLE_ADMIN")
       this.getUserById(this.$route.params.id)

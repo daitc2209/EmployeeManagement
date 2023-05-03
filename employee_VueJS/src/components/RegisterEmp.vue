@@ -12,6 +12,7 @@
         <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
                 <h1 class="text-center">Register</h1>
+                <div class="alert alert-danger" role="alert" v-bind:style="{display}">{{ error }}</div>
                 <div class="card-body">
                     <form @submit.prevent="saveData">
                         <div class="form-group">
@@ -78,7 +79,9 @@ export default {
                 password: '',
                 dob: '',
                 address: ''
-            }
+            },
+            error:'',
+            display: 'none',
         }
     },
     methods: {
@@ -87,10 +90,10 @@ export default {
             EmployeeService.create(this.Employee)
                 .then(() => {
                     sessionStorage.setItem("message1",true)
-                    alert("Register successfully!!")
+                    // this.display="block"; this.error = 'Register successfully !!';
                     this.$router.push("/loginEmp")
                 })
-                .catch((err) => { alert("Can't add new Employee") })
+                .catch((err) => { this.display="block"; this.error = 'Please check your info';})
         }
     },
     created() {

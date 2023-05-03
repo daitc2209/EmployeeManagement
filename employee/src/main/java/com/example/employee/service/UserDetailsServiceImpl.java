@@ -6,6 +6,7 @@ import com.example.employee.model.Users;
 import com.example.employee.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -16,9 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -52,20 +51,20 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         if (user.getRole() == null || user.getRole() == "")
             user.setRole("ROLE_USER");
-//        if (user.isActive() == false)
-//            user.setActive(true);
         // Save user
         return userRep.save(user);
     }
 
-    public String login(String email, String password) throws Exception {
-//  Users user = userRep.findUserByEmail1(email);
+    public ResponseEntity<Map<String, String>> login(String email, String password) throws Exception {
         var user = userRep.findUserByEmail(email)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email not found"));
         System.out.println(user);
+        Map<String,String> m = new HashMap<>();
+        m.put("role", user.getRole());
         if(user.isActive()) {
             if (passwordEncoder.matches(password, user.getPassword())) {
-                return jwtService.generateToken(user.getEmail());
+                m.put("token",jwtService.generateToken(user.getEmail()));
+                return ResponseEntity.ok(m);
             }
             throw new Exception("Email details invalid.");
         }
@@ -76,6 +75,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public List<Users> getUserActive(){
                     return userRep.findAll();
                 }
+
+    public List<Users> SearchUser(String keyword) {
+        return userRep.findAll(keyword);
+    }
 
     public void deleteUser(Long id) {
         boolean exists = userRep.existsById(id);
@@ -97,6 +100,4 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public Users updateUser(Users u){
         return userRep.save(u);
     }
-
-    public Users getUserByEmail(String email){ return userRep.findUserByEmail(email).get();}
 }

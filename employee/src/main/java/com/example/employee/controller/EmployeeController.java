@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.*;
 import com.example.employee.model.Employee;
 import com.example.employee.service.EmployeeService;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/employees")
@@ -28,9 +30,15 @@ public class EmployeeController {
     private EmployeeService empService;
 
     //Render data
-    @GetMapping
+    @GetMapping()
     public List<Employee> getEmployee(){
         return empService.getEmployees();
+    }
+
+    //Search data
+    @GetMapping("/search")
+    public List<Employee> searchEmployees(@RequestParam String keyword) {
+        return empService.SearchEmployees(keyword);
     }
 
     @PostMapping("/loginEmp")
@@ -77,9 +85,11 @@ public class EmployeeController {
 
     //Delete database
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteEmployee(@PathVariable(value="id") Long id){
+    public ResponseEntity<Map<String,String>> deleteEmployee(@PathVariable(value="id") Long id){
         empService.deleteEmp(id);
 //        return new ResponseEntity<>("Xóa thành công", responseHeaders, HttpStatus.OK);
-        return ResponseEntity.ok("Xóa dữ liệu thành công!");
+        Map<String,String> map = new HashMap<>();
+        map.put("message","Xoa thanh cong");
+        return ResponseEntity.ok(map);
     }
 }

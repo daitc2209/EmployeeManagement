@@ -19,6 +19,10 @@ class EmployeeService{
     remove(id){
         return privateAuth.delete(`employees/delete/${id}`)
     }
+
+    searchEmployees(data){
+        return privateAuth.get(`employees/search`,data)
+    }
     
 }
 

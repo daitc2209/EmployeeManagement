@@ -73,17 +73,15 @@ import Users from '../service/Users';
                 .then((res) => {
                     console.log(res.data)
                     if(res.data != null){
-                        Users.getUserByEmail(this.User.email).then((ress) => {
-                            sessionStorage.setItem("role", ress.data);
-                        }).catch((err)=>{console.log(err)})
                         sessionStorage.clear();
-                        sessionStorage.setItem("jwtToken", res.data);
+                        sessionStorage.setItem("jwtToken", res.data.token);
+                        sessionStorage.setItem("role", res.data.role);
                         sessionStorage.setItem("User_email", this.User.email);
                         sessionStorage.setItem("message2",true)
                         this.$router.push("/home")
                     }
                 })
-                .catch((err) => { this.error = 'Invaild username/password'; this.display="block"; })
+                .catch((err) => { this.display="block"; this.error = 'Invaild username/password'; })
             
             
         }

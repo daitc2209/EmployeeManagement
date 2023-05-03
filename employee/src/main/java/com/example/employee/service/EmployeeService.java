@@ -27,8 +27,14 @@ public class EmployeeService {
     @Autowired
     private JwtService jwtService;
 
+    public List<Employee> SearchEmployees(String keyword) {
+            return empRepository.findAll(keyword);
+    }
+
     //READ
-    public List<Employee> getEmployees() {
+    public List<Employee> getEmployees(/*String keyword*/) {
+//        if (keyword != null && keyword != "")
+//            return empRepository.findAll(keyword);
         return empRepository.findEmployeeByEmailNotIsDelete();
     }
 

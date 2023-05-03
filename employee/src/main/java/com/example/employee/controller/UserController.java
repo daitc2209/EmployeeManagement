@@ -11,7 +11,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/user")
@@ -21,24 +23,11 @@ public class UserController {
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
 
-//    @Autowired
-//    private JwtService jwtService;
-//
-//    @Autowired
-//    private PasswordEncoder passwordEncoder;
-
-//    @GetMapping("/token")
-//    public String getToken(@RequestBody Users authRequest) throws Exception {
-//        // Get user details
-//        UserDetails userDetails = userDetailsService.loadUserByUsername(authRequest.getEmail());
-//        System.out.println(userDetails);
-//        if(passwordEncoder.matches(authRequest.getPassword(), userDetails.getPassword())){
-//            // Generate token
-//            return jwtService.generateToken(authRequest.getEmail());
-//        }
-//
-//        throw new Exception("Email details invalid.");
-//    }
+    //Search data
+    @GetMapping("/search")
+    public List<Users> searchEmployees(@RequestParam String keyword) {
+        return userDetailsService.SearchUser(keyword);
+    }
 
     //CREATE
     @PostMapping("/createUser")
@@ -49,7 +38,7 @@ public class UserController {
 
     //LOGIN
     @PostMapping("/login")
-    public String login(@RequestBody Users users) throws Exception{
+    public ResponseEntity<Map<String, String>> login(@RequestBody Users users) throws Exception{
         return userDetailsService.login(users.getEmail(), users.getPassword());
     }
 
@@ -59,21 +48,14 @@ public class UserController {
         return userDetailsService.getUserActive();
     }
 
-    @GetMapping("/{email}")
-    public ResponseEntity<String> getUserByEmail(@PathVariable(value="email") String email){
-        Users user =  userDetailsService.getUserByEmail(email);
-        return ResponseEntity.ok(user.getRole());
-//        var user =  userDetailsService.getUserByEmail(u.getEmail());
-//        return  user.getRole();
-    }
-
 
     //DELETE
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable(value="id") Long id){
+    public ResponseEntity<Map<String, String>> deleteUser(@PathVariable(value="id") Long id){
         userDetailsService.deleteUser(id);
-//        return new ResponseEntity<>("Xóa thành công", responseHeaders, HttpStatus.OK);
-        return ResponseEntity.ok("Xóa dữ liệu thành công!");
+        Map<String,String> map = new HashMap<>();
+        map.put("message","Xóa dữ liệu thành công!");
+        return ResponseEntity.ok(map);
     }
 
     //UPDATE

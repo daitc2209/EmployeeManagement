@@ -4,7 +4,9 @@ import axios from "axios"
 // // axios.defaults.headers.common['Access-Control-Allow-Method'] = ['GET, POST, PUT, DELETE'];
 // axios.defaults.headers.common['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept';
 // axios.defaults.baseURL = 'http://localhost:8080/'
-// axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem("jwtToken");
+// if(sessionStorage.getItem("jwtToken") != null && sessionStorage.getItem("jwtToken") != ""){
+//     axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem("jwtToken");
+// }
 
 const BASE_URL = 'http://localhost:8080/api/'
 export const publicAuth = axios.create({

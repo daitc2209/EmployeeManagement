@@ -15,6 +15,9 @@
     </div>
     <h6 class="display-6 " style="font-size: 24px">Role: {{ role }}</h6>
 
+    <input type="text" v-model="searchText" class="form-control" placeholder="Search...">
+      <br>
+
     <div class="alert alert-info" role="alert" v-bind:style="{display}">{{ message }}</div>
 
     <table class="table">
@@ -56,7 +59,8 @@ export default {
       UserEmail: sessionStorage.getItem("User_email"),
       display:'none',
       message:'',
-      role: sessionStorage.getItem("role")
+      role: sessionStorage.getItem("role"),
+      searchText:''
     }
   },
   methods: {
@@ -80,9 +84,24 @@ export default {
     logout() {
       sessionStorage.removeItem("jwtToken");
       sessionStorage.removeItem("User_email");
+      sessionStorage.removeItem("role");
+    },
+
+    searchUser() {
+      Users.searchUser({params:{
+          keyword: this.searchText
+        }})
+      .then(response => {
+        this.user = response.data;
+      });
     }
   },
-  created() {
+  watch: {
+    searchText() {
+      this.searchUser();
+    }
+  },
+  mounted() {
     if(sessionStorage.getItem("User_email") != null)
     {
       if(sessionStorage.getItem("role")=="ROLE_ADMIN")

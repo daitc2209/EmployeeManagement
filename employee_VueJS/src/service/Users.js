@@ -26,8 +26,8 @@ class Users{
         return privateAuth.delete(`user/delete/${id}`)
     }
 
-    getUserByEmail(email){
-        return publicAuth.get(`user/${email}`)
+    searchUser(data){
+        return privateAuth.get(`user/search`,data)
     }
 }
 

@@ -17,6 +17,16 @@ export default {
             sessionStorage.removeItem("jwtToken");
             sessionStorage.removeItem("Employee_email");
         }
+    },
+
+    mounted() {
+    if(sessionStorage.getItem("Employee_email") != null){
+      this.getUserById(this.$route.params.id)
     }
+    else{
+        this.$router.push("/")
+        alert("you must login!!")
+    }
+  }
 }
 </script>

@@ -12,10 +12,13 @@
     </div>
     <h6 class="display-6 " style="font-size: 24px">Role: {{ role }}</h6>
     <!-- <h1 class="text-center">Employees List</h1> -->
+    <div v-if="role === 'ROLE_ADMIN'"><a href="/homeAdmin" style="font-size: 24px;"> <b>List User</b></a></div>
 
+    <input type="text" v-model="searchText" class="form-control" placeholder="Search...">
+      <br>
+
+      <!-- Messageeee -->
     <div class="alert alert-info" role="alert" v-bind:style="{display}">{{ message }}</div>
-
-    <div v-if="role === 'ROLE_ADMIN'"><a href="/homeAdmin" style="font-size: 24px"> <b>List User</b></a></div>
 
     <table class="table">
       <thead>
@@ -62,7 +65,8 @@ export default {
       UserEmail: sessionStorage.getItem("User_email"),
       display:'none',
       message:'',
-      role: sessionStorage.getItem("role")
+      role: sessionStorage.getItem("role"),
+      searchText:''
     }
   },
   methods: {
@@ -86,9 +90,26 @@ export default {
     logout() {
       sessionStorage.removeItem("jwtToken");
       sessionStorage.removeItem("User_email");
+    },
+
+    searchEmployees() {
+      EmployeeService.searchEmployees({params:{
+          keyword: this.searchText
+        }})
+      .then(response => {
+        this.employees = response.data;
+      });
     }
   },
-  created() {
+  watch: {
+    searchText() {
+      this.searchEmployees();
+    }
+  },
+
+
+  mounted() {
+  // created() {
     if(sessionStorage.getItem("User_email") != null)
       this.getEmployees()
       else

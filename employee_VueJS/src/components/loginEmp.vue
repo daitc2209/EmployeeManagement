@@ -16,9 +16,9 @@
             <form @submit.prevent="login">
 
 <!--                 error message-->
-                    <div class="alert alert-danger" role="alert" v-bind:style="{display}">{{ error }}</div>
+    <div class="alert alert-danger" role="alert" v-bind:style="{display}">{{ error }}</div>
 
-    <!-- <div class="alert alert-info" role="alert" v-bind:style="{display1}">{{ message }}</div> -->
+    <div class="alert alert-info" role="alert" v-bind:style="{display1}">{{ message }}</div>
 
 
                 <div class = "form-group">
@@ -66,8 +66,9 @@ import EmployeeService from '../service/EmployeeService';
                 password: '',
             },
             error:'',
+            message: '',
             display: 'none',
-            // display1: 'none'
+            display1: 'none',
         }
     },
     methods: {
@@ -86,7 +87,16 @@ import EmployeeService from '../service/EmployeeService';
                 .catch((err) => { this.error = 'Invaild username/password'; this.display="block"; })
         }
     },
-    created(){
+    mounted(){
+        if(sessionStorage.getItem("message1"))
+        {
+            this.display1="block";
+            this.message="Register successfully!!"
+        }
+        else{
+            this.display1='none';
+            this.message='';
+        }
     }
 }
 </script>

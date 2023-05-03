@@ -54,12 +54,10 @@ public class SecurityConfig {
 
         // Authorize http requests
         http.authorizeHttpRequests()
-                .requestMatchers("/api/user/login","/api/employees/loginEmp","/api/user/{email}").permitAll()
+                .requestMatchers("/api/user/login","/api/employees/loginEmp").permitAll()
                 .requestMatchers("/api/employees/createEmp").permitAll()
                 .requestMatchers("/api/user/**").hasAnyAuthority("ROLE_ADMIN")
                 .requestMatchers("/api/employees/**").hasAnyAuthority("ROLE_USER","ROLE_ADMIN")
-//                .requestMatchers("/token").permitAll()
-//                  .requestMatchers("/createUser").permitAll()
                   .anyRequest().authenticated();
 
         // Add JWT authentication filter

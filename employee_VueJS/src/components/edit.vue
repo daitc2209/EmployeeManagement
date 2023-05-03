@@ -101,7 +101,7 @@ export default {
         .catch(e => console.log(e));
     }
   },
-  created() {
+  mounted() {
     if(sessionStorage.getItem("User_email") != null)
       this.getEmployeesById(this.$route.params.id)
       else

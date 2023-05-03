@@ -91,7 +91,8 @@ export default {
 
             this.$router.push({ name: 'homeAdmin' })
         },
-        create() {
+    },
+    mounted() {
             if (sessionStorage.getItem("User_email") != null) {
                 if (sessionStorage.getItem("role") == "ROLE_ADMIN")
                     this.getUsers()
@@ -105,7 +106,6 @@ export default {
                 alert("you must login!!")
             } 
         }
-    }
 }
 </script>
 
