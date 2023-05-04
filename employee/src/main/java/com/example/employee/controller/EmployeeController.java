@@ -30,7 +30,7 @@ public class EmployeeController {
     private EmployeeService empService;
 
     //Render data
-    @GetMapping()
+    @GetMapping("/getEmp")
     public List<Employee> getEmployee(){
         return empService.getEmployees();
     }
@@ -42,13 +42,13 @@ public class EmployeeController {
     }
 
     @PostMapping("/loginEmp")
-    public String login(@RequestBody Employee emp) throws Exception{
+    public ResponseEntity<Map<String, String>> login(@RequestBody Employee emp) throws Exception{
         System.out.println("Email: "+ emp.getemail_id() + " password: " + emp.getPassword());
         return empService.login(emp.getemail_id(), emp.getPassword());
     }
 
     //Create
-    @PostMapping(value = "/createEmp")
+    @PostMapping(value = "/registerEmp")
     public Employee createEmployee(@RequestBody Employee emp){
         // ModelAttribute đóng vai trò là cầu lối giữa controller và View
         return empService.createEmp(emp);
@@ -73,11 +73,16 @@ public class EmployeeController {
         }
         else {
             existEmp.setId(id);
-            existEmp.setFirstName(emp.getFirstName());
-            existEmp.setLastName(emp.getLastName());
-            existEmp.setemail_id(emp.getemail_id());
-            existEmp.setDob(emp.getDob());
-            existEmp.setAddress(emp.getAddress());
+            if (emp.getFirstName() != null && emp.getFirstName() != "")
+                existEmp.setFirstName(emp.getFirstName());
+            if (emp.getLastName() != null && emp.getLastName() != "")
+                existEmp.setLastName(emp.getLastName());
+            if (emp.getemail_id() != null && emp.getemail_id() != "")
+                existEmp.setemail_id(emp.getemail_id());
+            if (emp.getDob() != null && emp.getDob().toString() != "")
+                existEmp.setDob(emp.getDob());
+            if (emp.getAddress() != null && emp.getAddress() != "")
+                existEmp.setAddress(emp.getAddress());
 
             return empService.updateEmp(existEmp);
         }

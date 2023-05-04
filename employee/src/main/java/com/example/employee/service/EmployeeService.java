@@ -5,15 +5,14 @@ import com.example.employee.repository.EmployeeRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class EmployeeService {
@@ -39,14 +38,16 @@ public class EmployeeService {
     }
 
     //Login
-    public String login(String email, String password) throws Exception {
+    public ResponseEntity<Map<String, String>> login(String email, String password) throws Exception {
         Employee emp = empRepository.findEmployeeByEmail1(email);
         if (emp == null){   //báo xem có tồn tại email trùng ko
             throw new IllegalStateException("email not exist");
         }
+        Map<String,String> m = new HashMap<>();
         if(emp.isActive()) {
             if (passwordEncoder.matches(password, emp.getPassword())) {
-                return jwtService.generateToken(emp.getemail_id());
+                m.put("token",jwtService.generateToken(emp.getemail_id()));
+                return ResponseEntity.ok(m);
             }
             throw new Exception("Email details invalid.");
         }

@@ -13,9 +13,7 @@
             <div class="col-md-6 col-md-offset-3">
 
                 <!-- success message -->
-                <div v-if="mesage">
-                    <div class="alert alert-info">{{ mesage }}</div>
-                </div>
+                <div class="alert alert-danger" role="alert" v-bind:style="{display}">{{ error }}</div>
 
                 <h1>Create new User</h1>
 
@@ -71,9 +69,11 @@ export default {
                 password: '',
                 name: '',
                 role: '',
-                active: '',
-                mesage: ''
-            }
+                active: ''
+                
+            },
+            error:'',
+            display:'none'
         }
     },
     methods: {
@@ -84,19 +84,17 @@ export default {
             console.log(this.User)
             Users.created1(this.User)
                 .then(() => {
-                    // this.mesage = "You've successfully registered !";
-                    alert("Add new user successfully!!!");
+                    sessionStorage.setItem("message1",true);
+                    this.$router.push({ name: 'homeAdmin' })
                 })
-                .catch((err) => { console.log(err) })
+                .catch((err) => { this.error = 'Invaild username/password'; this.display="block"; })
 
-            this.$router.push({ name: 'homeAdmin' })
         },
     },
     mounted() {
             if (sessionStorage.getItem("User_email") != null) {
-                if (sessionStorage.getItem("role") == "ROLE_ADMIN")
-                    this.getUsers()
-                else {
+                if (sessionStorage.getItem("role") != "ROLE_ADMIN")
+                {
                     this.$router.push("/home")
                     alert("you are not Admin!!")
                 }

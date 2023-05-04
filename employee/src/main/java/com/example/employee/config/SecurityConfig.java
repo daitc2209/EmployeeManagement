@@ -55,7 +55,7 @@ public class SecurityConfig {
         // Authorize http requests
         http.authorizeHttpRequests()
                 .requestMatchers("/api/user/login","/api/employees/loginEmp").permitAll()
-                .requestMatchers("/api/employees/createEmp").permitAll()
+                .requestMatchers("/api/employees/registerEmp").permitAll()
                 .requestMatchers("/api/user/**").hasAnyAuthority("ROLE_ADMIN")
                 .requestMatchers("/api/employees/**").hasAnyAuthority("ROLE_USER","ROLE_ADMIN")
                   .anyRequest().authenticated();

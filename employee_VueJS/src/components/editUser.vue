@@ -34,7 +34,7 @@
                 <br>
                 <input type="radio" v-model="user.active" name="active" value="false" class="form-check-input">
                 <label class="form-check-label">No</label>
-            </div>
+              </div>
             </div>
             <br>
             <div class="box-footer">

@@ -79,7 +79,7 @@ import EmployeeService from '../service/EmployeeService';
                     console.log(res.data)
                     if(res.data != null){
                         sessionStorage.clear();
-                        sessionStorage.setItem("jwtToken", res.data);
+                        sessionStorage.setItem("jwtToken", res.data.token);
                         sessionStorage.setItem("Employee_email", this.Employee.email_id);
                         this.$router.push("/homeEmp")
                     }

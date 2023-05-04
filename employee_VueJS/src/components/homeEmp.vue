@@ -20,10 +20,7 @@ export default {
     },
 
     mounted() {
-    if(sessionStorage.getItem("Employee_email") != null){
-      this.getUserById(this.$route.params.id)
-    }
-    else{
+    if(sessionStorage.getItem("Employee_email") == null || sessionStorage.getItem("Employee_email") == ""){
         this.$router.push("/")
         alert("you must login!!")
     }

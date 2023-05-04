@@ -13,7 +13,7 @@ class Users{
     }
     getUsers(data){
         // return axios.post(`createUser`,data) 
-        return privateAuth.get(`user/userActive`,data) 
+        return privateAuth.get(`user/getuser`,data) 
     }
 
     getUserById(id){

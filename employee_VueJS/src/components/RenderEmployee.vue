@@ -90,6 +90,7 @@ export default {
     logout() {
       sessionStorage.removeItem("jwtToken");
       sessionStorage.removeItem("User_email");
+      sessionStorage.removeItem("role");
     },
 
     searchEmployees() {
