@@ -10,10 +10,10 @@
     </nav>
     <div class="container">
         <div class="row">
-            <div class="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
+            <div class="col-lg-6 col-md-offset-3">
                 <h1 class="text-center">Register</h1>
                 <div class="alert alert-danger" role="alert" v-bind:style="{display}">{{ error }}</div>
-                <div class="card-body">
+                
                     <form @submit.prevent="saveData">
                         <div class="form-group">
                             <label>First name: </label>
@@ -56,7 +56,7 @@
                             <a href="/loginEmp" class="btn btn-info">Cancel</a>
                         </div>
                     </form>
-                </div>
+                
             </div>
         </div>
     </div>

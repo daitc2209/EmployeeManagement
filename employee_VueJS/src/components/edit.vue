@@ -43,6 +43,8 @@
               <a href="/home" class="btn btn-info">Cancel</a>
             </div>
           </form>
+          <!-- success message -->
+          <div class="alert alert-danger" role="alert" v-bind:style="{display}">{{ error }}</div>
         </div>
       </div>
     </div>
@@ -66,7 +68,9 @@ export default {
         email_id: '',
         dob: '',
         address: ''
-      }
+      },
+      error:'',
+      display:'none'
     }
   },
   methods: {
@@ -89,8 +93,9 @@ export default {
         })
         .catch(e => {
           alert("Please check your information")
+          this.error = 'Please check your information'; this.display="block";
         });
-      this.$router.push({ name: 'home' })
+        this.$router.push("/home")
     },
 
     getEmployeesById(id) {

@@ -81,7 +81,8 @@ export default {
 
     remove(emp) {
       EmployeeService.remove(emp).then(() => {
-        alert("Deleteddd");
+        sessionStorage.setItem("message3",true);
+        location.reload();
         this.getEmployees()
       })
         .catch((err) => { console.log(err) });
@@ -111,13 +112,6 @@ export default {
 
   mounted() {
   // created() {
-    if(sessionStorage.getItem("User_email") != null)
-      this.getEmployees()
-      else
-      {
-        this.$router.push("/")
-        alert("you must login!!")
-      }
 
       if(sessionStorage.getItem("message"))
       {
@@ -134,8 +128,22 @@ export default {
       if(sessionStorage.getItem("message2"))
       {
         this.display = 'block',
-        this.message = 'Login successfully !!! Please press F5 to render info'
+        this.message = 'Login successfully !!!'
         sessionStorage.removeItem("message2")
+      }
+      if(sessionStorage.getItem("message3"))
+      {
+        this.display = 'block',
+        this.message = 'Delete successfully !!!'
+        sessionStorage.removeItem("message3")
+      }
+
+      if(sessionStorage.getItem("User_email") != null)
+      this.getEmployees()
+      else
+      {
+        this.$router.push("/")
+        alert("you must login!!")
       }
   }
 

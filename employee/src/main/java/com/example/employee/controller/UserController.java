@@ -88,6 +88,7 @@ public class UserController {
                 existUser.setEmail(u.getEmail());
             if(u.getRole() != null && u.getRole() != "")
                 existUser.setRole(u.getRole());
+
             existUser.setActive(u.isActive());
 
             return userDetailsService.updateUser(existUser);

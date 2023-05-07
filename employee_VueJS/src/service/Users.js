@@ -1,33 +1,38 @@
 
-import { publicAuth,privateAuth} from './auth'
+// import { publicAuth,privateAuth} from './auth'
+import axios from "axios"
 
 class Users{
     login(data)
     {
-        // return axios.post('login',data) 
-        return publicAuth.post('user/login',data) 
+        return axios.post('user/login',data) 
+        // return publicAuth.post('user/login',data) 
     }
     created1(data){
-        // return axios.post(`createUser`,data) 
-        return privateAuth.post(`user/createUser`,data) 
+        return axios.post(`user/createUser`,data) 
+        // return privateAuth.post(`user/createUser`,data) 
     }
     getUsers(data){
-        // return axios.post(`createUser`,data) 
-        return privateAuth.get(`user/getuser`,data) 
+        return axios.get(`user/getuser`,data) 
+        // return privateAuth.get(`user/getuser`,data) 
     }
 
     getUserById(id){
-        return privateAuth.get(`user/edit/${id}`)
+        return axios.get(`user/edit/${id}`) 
+        // return privateAuth.get(`user/edit/${id}`)
     }
     update(id, data){
-        return privateAuth.put(`user/${id}`,data)
+        return axios.put(`user/${id}`,data)
+        // return privateAuth.put(`user/${id}`,data)
     }
     remove(id){
-        return privateAuth.delete(`user/delete/${id}`)
+        return axios.delete(`user/delete/${id}`) 
+        // return privateAuth.delete(`user/delete/${id}`)
     }
 
     searchUser(data){
-        return privateAuth.get(`user/search`,data)
+        return axios.get(`user/search`,data)
+        // return privateAuth.get(`user/search`,data)
     }
 }
 

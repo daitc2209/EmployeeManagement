@@ -20,10 +20,20 @@
                 placeholder="Enter name...">
             </div>
             <br>
-            <div class="form-group">
+            <!-- <div class="form-group">
               <label>Role: </label>
               <input type="text" v-model="user.role" name="email" class="form-control" required
                 placeholder="Enter email...">
+            </div> -->
+            <div class="form-group">
+              <label for="" class="form-label"><b>role: </b></label>
+              <div>
+                <input type="radio" v-model="user.role" name="role" value="ROLE_USER" class="form-check-input">
+                <label class="form-check-label">ROLE_USER</label>
+                <br>
+                <input type="radio" v-model="user.role" name="role" value="ROLE_ADMIN" class="form-check-input">
+                <label class="form-check-label">ROLE_ADMIN</label>
+              </div>
             </div>
             <br>
             <div class="form-group">
@@ -42,6 +52,8 @@
               <a href="/homeAdmin" class="btn btn-info">Cancel</a>
             </div>
           </form>
+          <!-- success message -->
+          <div class="alert alert-danger" role="alert" v-bind:style="{display}">{{ error }}</div>
         </div>
       </div>
     </div>
@@ -64,7 +76,9 @@ export default {
         name: '',
         role: '',
         active: ''
-      }
+      },
+      error:'',
+      display:'none'
     }
   },
   methods: {
@@ -84,10 +98,13 @@ export default {
       Users.update(this.user.id, dataa)
         .then(() => {
           sessionStorage.setItem("message",true);
-          alert("Edit successfully!!! Please press F5");
+          alert("Edit successfully!!")
+          // this.$router.push({ name: 'homeAdmin' })
+
         })
         .catch(e => {
-          alert("Please check your information")
+          alert("Check your information!!")
+          this.error = 'Please check your information'; this.display="block";
         });
       this.$router.push({ name: 'homeAdmin' })
     },

@@ -53,6 +53,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 import Users from '../service/Users';
     export default {
         data() {
@@ -67,7 +68,7 @@ import Users from '../service/Users';
         }
     },
     methods: {
-        async login() {
+        login() {
             console.log(this.User)
             Users.login(this.User)
                 .then((res) => {
@@ -78,12 +79,13 @@ import Users from '../service/Users';
                         sessionStorage.setItem("role", res.data.role);
                         sessionStorage.setItem("User_email", this.User.email);
                         sessionStorage.setItem("message2",true)
+                        axios.defaults.headers.Authorization = `Bearer ${res.data.token}`;
                         this.$router.push("/home")
                     }
                 })
                 .catch((err) => { this.display="block"; this.error = 'Invaild username/password'; })
-            
-            
+
+                
         }
     },
     created(){

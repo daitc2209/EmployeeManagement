@@ -13,7 +13,7 @@
             <div class="col-md-6 col-md-offset-3">
 
                 <!-- success message -->
-                <div class="alert alert-danger" role="alert" v-bind:style="{display}">{{ error }}</div>
+                <div class="alert alert-danger" role="alert" v-bind:style="{ display }">{{ error }}</div>
 
                 <h1>Create new User</h1>
 
@@ -28,11 +28,21 @@
                         <input type="text" v-model="User.password" class="form-control" id="password" name="password"
                             aria-describedby="" required autofocus>
                     </div>
-                    <div class="mb-3">
+                    <!-- <div class="mb-3">
                         <label for="role" class="form-label"><b>Role: </b></label>
                         <input type="text" v-model="User.role" class="form-control" id="role" name="role"
                             aria-describedby="" required autofocus
                             placeholder="Please enter your role: ROLE_ADMIN OR ROLE_USER">
+                    </div> -->
+                    <div class="form-group">
+                        <label for="" class="form-label"><b>role: </b></label>
+                        <div>
+                            <input type="radio" v-model="User.role" name="role" value="ROLE_USER" class="form-check-input">
+                            <label class="form-check-label">ROLE_USER</label>
+                            <br>
+                            <input type="radio" v-model="User.role" name="role" value="ROLE_ADMIN" class="form-check-input">
+                            <label class="form-check-label">ROLE_ADMIN</label>
+                        </div>
                     </div>
                     <div class="mb-3">
                         <label for="name" class="form-label"><b>Name: </b></label>
@@ -70,10 +80,10 @@ export default {
                 name: '',
                 role: '',
                 active: ''
-                
+
             },
-            error:'',
-            display:'none'
+            error: '',
+            display: 'none'
         }
     },
     methods: {
@@ -84,26 +94,25 @@ export default {
             console.log(this.User)
             Users.created1(this.User)
                 .then(() => {
-                    sessionStorage.setItem("message1",true);
+                    sessionStorage.setItem("message1", true);
                     this.$router.push({ name: 'homeAdmin' })
                 })
-                .catch((err) => { this.error = 'Invaild username/password'; this.display="block"; })
+                .catch((err) => { this.error = 'Invaild username/password'; this.display = "block"; })
 
         },
     },
     mounted() {
-            if (sessionStorage.getItem("User_email") != null) {
-                if (sessionStorage.getItem("role") != "ROLE_ADMIN")
-                {
-                    this.$router.push("/home")
-                    alert("you are not Admin!!")
-                }
+        if (sessionStorage.getItem("User_email") != null) {
+            if (sessionStorage.getItem("role") != "ROLE_ADMIN") {
+                this.$router.push("/home")
+                alert("you are not Admin!!")
             }
-            else {
-                this.$router.push("/")
-                alert("you must login!!")
-            } 
         }
+        else {
+            this.$router.push("/")
+            alert("you must login!!")
+        }
+    }
 }
 </script>
 

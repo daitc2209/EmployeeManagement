@@ -75,7 +75,8 @@ export default {
 
     remove(user) {
       Users.remove(user).then(() => {
-        alert("Deleteddd");
+        sessionStorage.setItem("message3",true);
+        location.reload();
         this.getUsers()
       })
         .catch((err) => { console.log(err) });
@@ -132,8 +133,14 @@ export default {
       if(sessionStorage.getItem("message2"))
       {
         this.display = 'block',
-        this.message = 'Login successfully !!! Please press F5 to render info'
+        this.message = 'Login successfully !!'
         sessionStorage.removeItem("message2")
+      }
+      if(sessionStorage.getItem("message3"))
+      {
+        this.display = 'block',
+        this.message = 'Delete successfully !!!'
+        sessionStorage.removeItem("message3")
       }
   }
 
