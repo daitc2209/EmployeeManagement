@@ -34,6 +34,11 @@ class Users{
         return axios.get(`user/search`,data)
         // return privateAuth.get(`user/search`,data)
     }
+
+    checkEmail(input){
+        const email = /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
+        return email.test(input);
+    }
 }
 
 export default new Users()

@@ -1,12 +1,15 @@
 
 <template>
-  <Header/>
+  <Header />
   <div class="container">
     <div class="row">
       <div class="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
         <h1 class="text-center">Edit Employee</h1>
         <div class="card-body">
-          <form @submit="update">
+          <!-- success message -->
+          <div class="alert alert-danger" role="alert" v-bind:style="{ display }">{{ error }}</div>
+          
+          <form @submit.prevent="update">
             <input type="text" hidden v-model="Employee.id" name="id" class="form-control">
             <div class="form-group">
               <label>First name: </label>
@@ -43,8 +46,6 @@
               <a href="/home" class="btn btn-info">Cancel</a>
             </div>
           </form>
-          <!-- success message -->
-          <div class="alert alert-danger" role="alert" v-bind:style="{display}">{{ error }}</div>
         </div>
       </div>
     </div>
@@ -69,15 +70,24 @@ export default {
         dob: '',
         address: ''
       },
-      error:'',
-      display:'none'
+      error: '',
+      display: 'none'
     }
   },
   methods: {
+    checkEmail() {
+      let msg = "";
+      if (!EmployeeService.checkEmail(this.Employee.email_id)) {
+        msg += "Email không đúng định dạng";
+      }
+      console.log(EmployeeService.checkEmail(this.Employee.email_id))
+      return msg;
+    },
+
     update() {
       this.updateData();
     },
-    
+
     updateData() {
       var dataa = {
         firstName: this.Employee.firstName,
@@ -86,16 +96,22 @@ export default {
         dob: this.Employee.dob,
         address: this.Employee.address
       }
-      EmployeeService.update(this.Employee.id, dataa)
-        .then(() => {
-          sessionStorage.setItem("message",true);
-          alert("Edit successfully!!! Please press F5");
-        })
-        .catch(e => {
-          alert("Please check your information")
-          this.error = 'Please check your information'; this.display="block";
-        });
+      if (this.checkEmail() == "") {
+        EmployeeService.update(this.Employee.id, dataa)
+          .then(() => {
+            sessionStorage.setItem("message", true);
+            alert("Edit successfully!!! Please press F5");
+          })
+          .catch(e => {
+            alert("Please check your information")
+            this.error = 'Please check your information'; this.display = "block";
+          });
         this.$router.push("/home")
+      }
+      else {
+        this.display = 'block';
+        this.error = this.checkEmail();
+      }
     },
 
     getEmployeesById(id) {
@@ -107,13 +123,12 @@ export default {
     }
   },
   mounted() {
-    if(sessionStorage.getItem("User_email") != null)
+    if (sessionStorage.getItem("User_email") != null)
       this.getEmployeesById(this.$route.params.id)
-      else
-      {
-        this.$router.push("/")
-        alert("you must login!!")
-      }
+    else {
+      this.$router.push("/")
+      alert("you must login!!")
+    }
   }
 }
 </script>

@@ -1,12 +1,15 @@
 
 <template>
-  <Header/>
+  <Header />
   <div class="container">
     <div class="row">
       <div class="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
         <h1 class="text-center">Edit User</h1>
         <div class="card-body">
-          <form @submit="update">
+          <!-- success message -->
+          <div class="alert alert-danger" role="alert" v-bind:style="{ display }">{{ error }}</div>
+
+          <form @submit.prevent="update">
             <input type="text" hidden v-model="user.id" name="id" class="form-control">
             <div class="form-group">
               <label>Email: </label>
@@ -52,8 +55,7 @@
               <a href="/homeAdmin" class="btn btn-info">Cancel</a>
             </div>
           </form>
-          <!-- success message -->
-          <div class="alert alert-danger" role="alert" v-bind:style="{display}">{{ error }}</div>
+
         </div>
       </div>
     </div>
@@ -77,15 +79,25 @@ export default {
         role: '',
         active: ''
       },
-      error:'',
-      display:'none'
+      error: '',
+      display: 'none'
     }
   },
   methods: {
+
+    checkEmail() {
+      let msg = "";
+      if (!Users.checkEmail(this.user.email)) {
+        msg += "Email không đúng định dạng";
+      }
+      console.log(Users.checkEmail(this.user.email))
+      return msg;
+    },
+
     update() {
       this.updateData();
     },
-    
+
     updateData() {
       var dataa = {
         id: this.user.id,
@@ -94,19 +106,26 @@ export default {
         role: this.user.role,
         active: this.user.active
       }
-      
-      Users.update(this.user.id, dataa)
-        .then(() => {
-          sessionStorage.setItem("message",true);
-          alert("Edit successfully!!")
-          // this.$router.push({ name: 'homeAdmin' })
 
-        })
-        .catch(e => {
-          alert("Check your information!!")
-          this.error = 'Please check your information'; this.display="block";
-        });
-      this.$router.push({ name: 'homeAdmin' })
+      if (this.checkEmail() == "") {
+        console.log(this.checkEmail())
+        Users.update(this.user.id, dataa)
+          .then(() => {
+            sessionStorage.setItem("message", true);
+            alert("Edit successfully!!")
+            // this.$router.push({ name: 'homeAdmin' })
+
+          })
+          .catch(e => {
+            alert("Check your information!!")
+            this.error = 'Please check your information'; this.display = "block";
+          });
+        this.$router.push({ name: 'homeAdmin' })
+      }
+      else {
+        this.display = 'block';
+        this.error = this.checkEmail();
+      }
     },
 
     getUserById(id) {
@@ -119,18 +138,17 @@ export default {
     }
   },
   mounted() {
-    if(sessionStorage.getItem("User_email") != null){
-      if(sessionStorage.getItem("role")=="ROLE_ADMIN")
-      this.getUserById(this.$route.params.id)
-      else
-      {
+    if (sessionStorage.getItem("User_email") != null) {
+      if (sessionStorage.getItem("role") == "ROLE_ADMIN")
+        this.getUserById(this.$route.params.id)
+      else {
         this.$router.push("/")
         alert("you must login!!")
       }
     }
-    else{
-        this.$router.push("/")
-        alert("you must login!!")
+    else {
+      this.$router.push("/")
+      alert("you must login!!")
     }
   }
 }

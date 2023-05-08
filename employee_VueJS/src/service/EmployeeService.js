@@ -31,6 +31,10 @@ class EmployeeService{
         return axios.get(`employees/search`,data)
     }
     
+    checkEmail(input){
+        const email = /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
+        return email.test(input);
+    }
 }
 
 

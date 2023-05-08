@@ -21,7 +21,7 @@
                     <div class="mb-3">
                         <label for="email" class="form-label"><b>Email: </b></label>
                         <input type="text" v-model="User.email" class="form-control" id="email" name="email"
-                            aria-describedby="" required autofocus>
+                            aria-describedby="" placeholder="eg: newEmail@gmail.com" required autofocus>
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label"><b>Password: </b></label>
@@ -87,20 +87,36 @@ export default {
         }
     },
     methods: {
+        checkEmail() {
+            let msg = "";
+            if (!Users.checkEmail(this.User.email)) {
+                msg += "Email không đúng định dạng";
+            }
+            console.log(Users.checkEmail(this.User.email))
+            return msg;
+        },
         save() {
             this.register();
         },
         register() {
-            console.log(this.User)
-            Users.created1(this.User)
-                .then(() => {
-                    sessionStorage.setItem("message1", true);
-                    this.$router.push({ name: 'homeAdmin' })
-                })
-                .catch((err) => { this.error = 'Invaild username/password'; this.display = "block"; })
+            if (this.checkEmail() == "") {
+                console.log(this.checkEmail())
+                console.log(this.User)
+                Users.created1(this.User)
+                    .then(() => {
+                        sessionStorage.setItem("message1", true);
+                        this.$router.push({ name: 'homeAdmin' })
+                    })
+                    .catch((err) => { this.error = 'Invaild username/password'; this.display = "block"; })
+            }
+            else {
+                this.display = 'block';
+                this.error = this.checkEmail();
+            }
 
         },
     },
+
     mounted() {
         if (sessionStorage.getItem("User_email") != null) {
             if (sessionStorage.getItem("role") != "ROLE_ADMIN") {

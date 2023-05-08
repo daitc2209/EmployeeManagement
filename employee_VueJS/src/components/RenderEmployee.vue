@@ -1,5 +1,5 @@
 <template>
-  <Header/>
+  <Header />
   <div class="container">
     <div class="d-flex bd-highlight mb-3">
       <div class="me-auto p-2 bd-highlight">
@@ -15,10 +15,10 @@
     <div v-if="role === 'ROLE_ADMIN'"><a href="/homeAdmin" style="font-size: 24px;"> <b>List User</b></a></div>
 
     <input type="text" v-model="searchText" class="form-control" placeholder="Search...">
-      <br>
+    <br>
 
-      <!-- Messageeee -->
-    <div class="alert alert-info" role="alert" v-bind:style="{display}">{{ message }}</div>
+    <!-- Messageeee -->
+    <div class="alert alert-info" role="alert" v-bind:style="{ display }">{{ message }}</div>
 
     <table class="table">
       <thead>
@@ -63,10 +63,10 @@ export default {
     return {
       employees: [],
       UserEmail: sessionStorage.getItem("User_email"),
-      display:'none',
-      message:'',
+      display: 'none',
+      message: '',
       role: sessionStorage.getItem("role"),
-      searchText:''
+      searchText: ''
     }
   },
   methods: {
@@ -81,7 +81,7 @@ export default {
 
     remove(emp) {
       EmployeeService.remove(emp).then(() => {
-        sessionStorage.setItem("message3",true);
+        sessionStorage.setItem("message3", true);
         location.reload();
         this.getEmployees()
       })
@@ -95,12 +95,14 @@ export default {
     },
 
     searchEmployees() {
-      EmployeeService.searchEmployees({params:{
+      EmployeeService.searchEmployees({
+        params: {
           keyword: this.searchText
-        }})
-      .then(response => {
-        this.employees = response.data;
-      });
+        }
+      })
+        .then(response => {
+          this.employees = response.data;
+        });
     }
   },
   watch: {
@@ -111,40 +113,35 @@ export default {
 
 
   mounted() {
-  // created() {
+    // created() {
 
-      if(sessionStorage.getItem("message"))
-      {
-        this.display = 'block',
+    if (sessionStorage.getItem("message")) {
+      this.display = 'block',
         this.message = 'Edit successfully !!!'
-        sessionStorage.removeItem("message")
-      }
-      if(sessionStorage.getItem("message1"))
-      {
-        this.display = 'block',
+      sessionStorage.removeItem("message")
+    }
+    if (sessionStorage.getItem("message1")) {
+      this.display = 'block',
         this.message = 'Create successfully !!!'
-        sessionStorage.removeItem("message1")
-      }
-      if(sessionStorage.getItem("message2"))
-      {
-        this.display = 'block',
+      sessionStorage.removeItem("message1")
+    }
+    if (sessionStorage.getItem("message2")) {
+      this.display = 'block',
         this.message = 'Login successfully !!!'
-        sessionStorage.removeItem("message2")
-      }
-      if(sessionStorage.getItem("message3"))
-      {
-        this.display = 'block',
+      sessionStorage.removeItem("message2")
+    }
+    if (sessionStorage.getItem("message3")) {
+      this.display = 'block',
         this.message = 'Delete successfully !!!'
-        sessionStorage.removeItem("message3")
-      }
+      sessionStorage.removeItem("message3")
+    }
 
-      if(sessionStorage.getItem("User_email") != null)
+    if (sessionStorage.getItem("User_email") != null)
       this.getEmployees()
-      else
-      {
-        this.$router.push("/")
-        alert("you must login!!")
-      }
+    else {
+      this.$router.push("/")
+      alert("you must login!!")
+    }
   }
 
 }
