@@ -90,7 +90,6 @@ export default {
       if (!Users.checkEmail(this.user.email)) {
         msg += "Email không đúng định dạng";
       }
-      console.log(Users.checkEmail(this.user.email))
       return msg;
     },
 
@@ -108,7 +107,6 @@ export default {
       }
 
       if (this.checkEmail() == "") {
-        console.log(this.checkEmail())
         Users.update(this.user.id, dataa)
           .then(() => {
             sessionStorage.setItem("message", true);

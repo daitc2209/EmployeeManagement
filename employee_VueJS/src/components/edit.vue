@@ -80,7 +80,6 @@ export default {
       if (!EmployeeService.checkEmail(this.Employee.email_id)) {
         msg += "Email không đúng định dạng";
       }
-      console.log(EmployeeService.checkEmail(this.Employee.email_id))
       return msg;
     },
 

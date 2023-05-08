@@ -92,7 +92,6 @@ export default {
             if (!Users.checkEmail(this.User.email)) {
                 msg += "Email không đúng định dạng";
             }
-            console.log(Users.checkEmail(this.User.email))
             return msg;
         },
         save() {
@@ -100,7 +99,6 @@ export default {
         },
         register() {
             if (this.checkEmail() == "") {
-                console.log(this.checkEmail())
                 console.log(this.User)
                 Users.created1(this.User)
                     .then(() => {
