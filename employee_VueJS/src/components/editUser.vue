@@ -97,7 +97,7 @@ export default {
       this.updateData();
     },
 
-    updateData() {
+    async updateData() {
       var dataa = {
         id: this.user.id,
         email: this.user.email,
@@ -110,15 +110,13 @@ export default {
         Users.update(this.user.id, dataa)
           .then(() => {
             sessionStorage.setItem("message", true);
-            alert("Edit successfully!!")
-            // this.$router.push({ name: 'homeAdmin' })
+            this.$router.push({ name: 'homeAdmin' })
 
           })
           .catch(e => {
-            alert("Check your information!!")
             this.error = 'Please check your information'; this.display = "block";
           });
-        this.$router.push({ name: 'homeAdmin' })
+        
       }
       else {
         this.display = 'block';
@@ -126,7 +124,7 @@ export default {
       }
     },
 
-    getUserById(id) {
+    async getUserById(id) {
       Users.getUserById(id)
         .then(res => {
           this.user = res.data

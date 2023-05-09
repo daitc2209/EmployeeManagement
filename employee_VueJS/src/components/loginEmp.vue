@@ -72,6 +72,7 @@ import EmployeeService from '../service/EmployeeService';
         }
     },
     methods: {
+        
         async login() {
             console.log(this.Employee)
             EmployeeService.login(this.Employee)

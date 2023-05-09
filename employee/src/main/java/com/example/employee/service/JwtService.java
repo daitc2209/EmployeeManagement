@@ -62,7 +62,7 @@ public class JwtService {
         // Generate token
         var currentDate = new Date(System.currentTimeMillis() );
 //        var BeforeTime = new Date(System.currentTimeMillis() + (1 * 60 * 10000));
-        var expiration = new Date(System.currentTimeMillis() + (100 * 60 * 10000)); // hết hạn sau khoảng 1 ngày
+        var expiration = new Date(System.currentTimeMillis() + (1000 * 60 * 10000)); // hết hạn sau khoảng 1 ngày
 
         return Jwts.builder()
                 .setSubject(email)

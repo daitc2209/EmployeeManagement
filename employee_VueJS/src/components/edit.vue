@@ -87,7 +87,7 @@ export default {
       this.updateData();
     },
 
-    updateData() {
+    async updateData() {
       var dataa = {
         firstName: this.Employee.firstName,
         lastName: this.Employee.lastName,
@@ -99,13 +99,11 @@ export default {
         EmployeeService.update(this.Employee.id, dataa)
           .then(() => {
             sessionStorage.setItem("message", true);
-            alert("Edit successfully!!! Please press F5");
+            this.$router.push("/home")
           })
           .catch(e => {
-            alert("Please check your information")
             this.error = 'Please check your information'; this.display = "block";
           });
-        this.$router.push("/home")
       }
       else {
         this.display = 'block';

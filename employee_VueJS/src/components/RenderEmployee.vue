@@ -115,14 +115,37 @@ export default {
   mounted() {
     // created() {
 
-    if (sessionStorage.getItem("message")) {
+    // if (sessionStorage.getItem("message")) {
+    //   this.display = 'block',
+    //     this.message = 'Edit successfully !!!'
+    //   sessionStorage.removeItem("message")
+    // }
+    // if (sessionStorage.getItem("message1")) {
+    //   this.display = 'block',
+    //     this.message = 'Register successfully !!!'
+    //   sessionStorage.removeItem("message1")
+    // }
+    // if (sessionStorage.getItem("message2")) {
+    //   this.display = 'block',
+    //     this.message = 'Login successfully !!!'
+    //   sessionStorage.removeItem("message2")
+    // }
+    // if (sessionStorage.getItem("message3")) {
+    //   this.display = 'block',
+    //     this.message = 'Delete successfully !!!'
+    //   sessionStorage.removeItem("message3")
+    // }
+
+    if (sessionStorage.getItem("User_email") != null)
+    {
+      if (sessionStorage.getItem("message")) {
       this.display = 'block',
         this.message = 'Edit successfully !!!'
       sessionStorage.removeItem("message")
     }
     if (sessionStorage.getItem("message1")) {
       this.display = 'block',
-        this.message = 'Create successfully !!!'
+        this.message = 'Register successfully !!!'
       sessionStorage.removeItem("message1")
     }
     if (sessionStorage.getItem("message2")) {
@@ -135,9 +158,9 @@ export default {
         this.message = 'Delete successfully !!!'
       sessionStorage.removeItem("message3")
     }
-
-    if (sessionStorage.getItem("User_email") != null)
       this.getEmployees()
+
+    }
     else {
       this.$router.push("/")
       alert("you must login!!")
