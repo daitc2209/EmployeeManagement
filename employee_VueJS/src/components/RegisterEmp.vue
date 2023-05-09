@@ -19,45 +19,45 @@
                     <div class="form-group">
                         <label>First name: </label>
                         <input type="text" v-model="Employee.firstName" name="firstName" class="form-control" required
-                            placeholder="Enter first name...">
+                            placeholder="Enter first name..." autofocus>
                     </div>
                     <br>
                     <div class="form-group">
                         <label>Last name: </label>
                         <input type="text" v-model="Employee.lastName" name="lastName" class="form-control" required
-                            placeholder="Enter last name...">
+                            placeholder="Enter last name..." autofocus>
                     </div>
                     <br>
                     <div class="form-group">
                         <label>Email: </label>
                         <input type="text" v-model="Employee.email_id" name="email_id" class="form-control" required
-                            placeholder="Enter email...">
+                            placeholder="eg: newEmail@gmail.com..." autofocus>
                     </div>
                     <br>
                     <div class="form-group">
                         <label>Password: </label>
                         <input type="text" v-model="Employee.password" name="password" class="form-control" required
-                            placeholder="Enter password...">
+                            placeholder="Enter password..." autofocus minlength="3" maxlength="20">
                     </div>
                     <br>
                     <div class="form-group">
                         <label>Date of birth: </label>
                         <input type="text" v-model="Employee.dob" name="dob" class="form-control" required
-                            placeholder="Enter Date of birth: YYYY-MM-DD...">
+                            placeholder="Enter Date of birth: YYYY-MM-DD..." autofocus>
                     </div>
                     <br>
                     <div class="form-group">
                         <label>Address: </label>
                         <input type="text" v-model="Employee.address" name="address" class="form-control" required
-                            placeholder="Enter Address...">
+                            placeholder="Enter Address..." autofocus>
                     </div>
                     <br>
                     <div class="box-footer">
-                        <button type="submit" class="btn btn-primary" style="margin-right: 5px;">Register</button>
-                        <a href="/loginEmp" class="btn btn-info">Cancel</a>
+                        <button type="submit" class="form-control btn btn-primary" style="margin-right: 5px;">Register</button>
+                        <a href="/loginEmp" class="btn btn-info" style="float: right; margin-top: 6px;">Cancel</a>
                     </div>
                 </form>
-
+                
             </div>
         </div>
     </div>
@@ -99,7 +99,6 @@ export default {
                 EmployeeService.create(this.Employee)
                     .then(() => {
                         sessionStorage.setItem("message1", true)
-                        // this.display="block"; this.error = 'Register successfully !!';
                         this.$router.push("/loginEmp")
                     })
                     .catch((err) => { this.display = "block"; this.error = 'Please check your info'; })
@@ -111,8 +110,6 @@ export default {
         }
 
     },
-    created() {
-    }
 }
 </script>
   

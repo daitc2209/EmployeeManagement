@@ -116,7 +116,6 @@ export default {
           .catch(e => {
             this.error = 'Please check your information'; this.display = "block";
           });
-        
       }
       else {
         this.display = 'block';

@@ -26,7 +26,7 @@
                     <div class="mb-3">
                         <label for="password" class="form-label"><b>Password: </b></label>
                         <input type="text" v-model="User.password" class="form-control" id="password" name="password"
-                            aria-describedby="" required autofocus>
+                            aria-describedby="" required autofocus minlength="3" maxlength="20">
                     </div>
                     <!-- <div class="mb-3">
                         <label for="role" class="form-label"><b>Role: </b></label>
@@ -97,7 +97,7 @@ export default {
         save() {
             this.register();
         },
-        register() {
+        async register() {
             if (this.checkEmail() == "") {
                 console.log(this.User)
                 Users.created1(this.User)

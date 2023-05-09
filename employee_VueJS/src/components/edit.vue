@@ -14,7 +14,7 @@
             <div class="form-group">
               <label>First name: </label>
               <input type="text" v-model="Employee.firstName" name="firstName" class="form-control" required
-                placeholder="Enter first name...">
+                placeholder="Enter first name..." >
             </div>
             <br>
             <div class="form-group">
