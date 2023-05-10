@@ -73,8 +73,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     public List<Users> getUser(){
-                    return userRep.findAll();
-                }
+        return userRep.findAll();
+    }
 
     public List<Users> SearchUser(String keyword) {
         return userRep.findAll(keyword);

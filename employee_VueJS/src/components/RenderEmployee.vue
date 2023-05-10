@@ -12,7 +12,7 @@
     </div>
     <h6 class="display-6 " style="font-size: 24px">Role: {{ role }}</h6>
     <!-- <h1 class="text-center">Employees List</h1> -->
-    <div v-if="role === 'ROLE_ADMIN'"><a href="/homeAdmin" style="font-size: 24px;"> <b>List User</b></a></div>
+    <div v-if="role === 'ROLE_ADMIN'"><a href="/homeAdmin" class="btn btn-primary" style="font-size: 24px; margin-bottom: 8px;"> <b>List User</b></a></div>
 
     <input type="text" v-model="searchText" class="form-control" placeholder="Search...">
     <br>

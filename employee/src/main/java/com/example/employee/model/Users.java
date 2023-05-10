@@ -10,7 +10,7 @@ public class Users {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id;
-    @Column(name = "email", unique = true, nullable = false, length = 45)
+    @Column(name = "email", nullable = false, length = 45)
     private String email;
 //    @JsonIgnore
     @Column(name = "password", nullable = false, length = 45)
