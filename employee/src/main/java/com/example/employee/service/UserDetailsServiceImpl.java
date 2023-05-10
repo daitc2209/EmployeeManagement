@@ -55,7 +55,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return userRep.save(user);
     }
 
-    public ResponseEntity<Map<String, String>> login(String email, String password) throws Exception {
+    public ResponseEntity<Object> login(String email, String password) throws Exception {
         var user = userRep.findUserByEmail(email)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email not found"));
         System.out.println(user);

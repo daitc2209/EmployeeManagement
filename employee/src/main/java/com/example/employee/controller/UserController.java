@@ -39,7 +39,7 @@ public class UserController {
 
     //LOGIN
     @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> login(@RequestBody Users users) throws Exception{
+    public ResponseEntity<Object> login(@RequestBody Users users) throws Exception{
         return userDetailsService.login(users.getEmail(), users.getPassword());
     }
 
@@ -52,7 +52,7 @@ public class UserController {
 
     //DELETE
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Map<String, String>> deleteUser(@PathVariable(value="id") Long id){
+    public ResponseEntity<Object> deleteUser(@PathVariable(value="id") Long id){
         if (userDetailsService.getUserById(id) == null)
         {
             Map<String,String> errorMap = new HashMap<>();

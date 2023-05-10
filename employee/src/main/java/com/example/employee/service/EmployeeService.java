@@ -38,7 +38,7 @@ public class EmployeeService {
     }
 
     //Login
-    public ResponseEntity<Map<String, String>> login(String email, String password) throws Exception {
+    public ResponseEntity<Object> login(String email, String password) throws Exception {
         Employee emp = empRepository.findEmployeeByEmail1(email);
         if (emp == null){   //báo xem có tồn tại email trùng ko
             throw new IllegalStateException("email not exist");

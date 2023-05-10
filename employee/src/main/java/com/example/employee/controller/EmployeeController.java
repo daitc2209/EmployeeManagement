@@ -42,7 +42,7 @@ public class EmployeeController {
     }
 
     @PostMapping("/loginEmp")
-    public ResponseEntity<Map<String, String>> login(@RequestBody Employee emp) throws Exception{
+    public ResponseEntity<Object> login(@RequestBody Employee emp) throws Exception{
         System.out.println("Email: "+ emp.getemail_id() + " password: " + emp.getPassword());
         return empService.login(emp.getemail_id(), emp.getPassword());
     }
@@ -90,7 +90,7 @@ public class EmployeeController {
 
     //Delete database
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Map<String,String>> deleteEmployee(@PathVariable(value="id") Long id){
+    public ResponseEntity<Object> deleteEmployee(@PathVariable(value="id") Long id){
         empService.deleteEmp(id);
 //        return new ResponseEntity<>("Xóa thành công", responseHeaders, HttpStatus.OK);
         Map<String,String> map = new HashMap<>();
