@@ -12,7 +12,7 @@
     <div class = "row">
         <div class = "col-md-6 col-md-offset-3">
 
-            <h1> Login Admin Page </h1>
+            <h1> Login Page </h1>
             <form @submit.prevent="login">
 
 <!--                 error message-->

@@ -31,9 +31,7 @@ public class EmployeeService {
     }
 
     //READ
-    public List<Employee> getEmployees(/*String keyword*/) {
-//        if (keyword != null && keyword != "")
-//            return empRepository.findAll(keyword);
+    public List<Employee> getEmployees() {
         return empRepository.findEmployeeByEmailNotIsDelete();
     }
 
