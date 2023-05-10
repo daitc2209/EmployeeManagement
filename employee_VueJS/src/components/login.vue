@@ -18,8 +18,6 @@
 <!--                 error message-->
                     <div class="alert alert-danger" role="alert" v-bind:style="{display}">{{ error }}</div>
 
-
-
                 <div class = "form-group">
                     <label for ="email"> Email </label> :
                     <input type="text" class = "form-control" id ="email" name = "email" required
