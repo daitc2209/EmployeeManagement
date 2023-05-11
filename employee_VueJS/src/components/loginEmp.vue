@@ -46,7 +46,7 @@
                 <div class="form-group">
                     <a href="/">Login with Admin</a>
                     <br>
-                    <span>New user? <a href="/register">Register
+                    <span>New Employee? <a href="/register">Register
                             here</a></span>
                 </div>
             </div>

@@ -31,11 +31,11 @@
             <div class="form-group">
               <label for="" class="form-label"><b>role: </b></label>
               <div>
-                <input type="radio" v-model="user.role" name="role" value="ROLE_USER" class="form-check-input">
-                <label class="form-check-label">ROLE_USER</label>
-                <br>
                 <input type="radio" v-model="user.role" name="role" value="ROLE_ADMIN" class="form-check-input">
                 <label class="form-check-label">ROLE_ADMIN</label>
+                <br>
+                <input type="radio" v-model="user.role" name="role" value="ROLE_SUPER_ADMIN" class="form-check-input">
+                <label class="form-check-label">ROLE_SUPER_ADMIN</label>
               </div>
             </div>
             <br>
@@ -126,15 +126,15 @@ export default {
     async getUserById(id) {
       Users.getUserById(id)
         .then(res => {
-          this.user = res.data
-          console.log(res.data)
+          this.user = res.data.data
+          console.log(res.data.data)
         })
         .catch(e => console.log(e));
     }
   },
   mounted() {
     if (sessionStorage.getItem("User_email") != null) {
-      if (sessionStorage.getItem("role") == "ROLE_ADMIN")
+      if (sessionStorage.getItem("role") == "ROLE_SUPER_ADMIN")
         this.getUserById(this.$route.params.id)
       else {
         this.$router.push("/")

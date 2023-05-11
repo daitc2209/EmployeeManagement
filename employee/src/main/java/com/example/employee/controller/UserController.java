@@ -26,13 +26,13 @@ public class UserController {
 
     //Search data
     @GetMapping("/search")
-    public List<Users> searchEmployees(@RequestParam String keyword) {
+    public ResponseEntity<Object> searchEmployees(@RequestParam String keyword) {
         return userDetailsService.SearchUser(keyword);
     }
 
     //CREATE
     @PostMapping("/createUser")
-    public Users createUser(@RequestBody Users req) throws Exception {
+    public ResponseEntity<Object> createUser(@RequestBody Users req) throws Exception {
         System.out.println(req.toString());
         return userDetailsService.createUser(req);
     }
@@ -45,7 +45,7 @@ public class UserController {
 
     //READ
     @GetMapping(value = "/getuser")
-    public List<Users> getUser(){
+    public ResponseEntity<Object> getUser(){
         return userDetailsService.getUser();
     }
 
@@ -56,30 +56,46 @@ public class UserController {
         if (userDetailsService.getUserById(id) == null)
         {
             Map<String,String> errorMap = new HashMap<>();
-            errorMap.put("error", "Không tìm thấy id để xóa!");
+            errorMap.put("error", "NOT_FOUND_ID");
+            errorMap.put("responseCode", "0");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMap);
         }
         userDetailsService.deleteUser(id);
         Map<String,String> map = new HashMap<>();
-        map.put("message","Xóa dữ liệu thành công!");
+        map.put("responseCode", "1");
+        map.put("message","DELETE_SUCCESS");
         return ResponseEntity.ok(map);
     }
 
     //UPDATE
     @GetMapping("/edit/{id}")
-    public Users editUserForm(@PathVariable(value = "id") Long id){
-        return userDetailsService.getUserById(id);
+    public ResponseEntity<Object> editUserForm(@PathVariable(value = "id") Long id){
+        Map map = new HashMap<>();
+        if (userDetailsService.getUserById(id) == null)
+        {
+            map.put("error", "NOT_FOUND_ID");
+            map.put("responseCode", "0");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(map);
+        }
+        map.put("responseCode","1");
+        map.put("data",userDetailsService.getUserById(id));
+        map.put("message","GET_USER_BY_ID_SUCCESS");
+        return  ResponseEntity.ok(map);
     }
 
     @PutMapping("/{id}")
-    public Users updateUser(@PathVariable(value = "id") Long id,
+    public ResponseEntity<Object> updateUser(@PathVariable(value = "id") Long id,
                               @RequestBody Users u){
 
         //lấy dữ liệu từ database từ id
         Users existUser = userDetailsService.getUserById(id);
-        if (existUser.isDelete() == true )
+        Map<String,String> Map = new HashMap<>();
+
+        if (existUser.isDelete() == true || existUser == null )
         {
-            throw new IllegalStateException("User doesn't exits");
+            Map.put("error", "NOT_FOUND_ID");
+            Map.put("responseCode", "0");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map);
         }
         else {
             if(u.getName() != null && u.getName() != "")
@@ -88,10 +104,14 @@ public class UserController {
                 existUser.setEmail(u.getEmail());
             if(u.getRole() != null && u.getRole() != "")
                 existUser.setRole(u.getRole());
-
             existUser.setActive(u.isActive());
 
-            return userDetailsService.updateUser(existUser);
+            userDetailsService.updateUser(existUser);
+            Map.put("responseCode","1");
+            Map.put("data","");
+            Map.put("message","EDIT_SUCCESS");
+
+            return ResponseEntity.ok(Map);
         }
     }
 }

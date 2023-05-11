@@ -114,7 +114,7 @@ export default {
     getEmployeesById(id) {
       EmployeeService.getEmployeesById(id)
         .then(res => {
-          this.Employee = res.data
+          this.Employee = res.data.data
         })
         .catch(e => console.log(e));
     }

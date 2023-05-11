@@ -1,5 +1,5 @@
 <template>
-  <Header/>
+  <Header />
   <div class="container">
     <div class="d-flex bd-highlight mb-3">
       <div class="me-auto p-2 bd-highlight">
@@ -16,9 +16,9 @@
     <h6 class="display-6 " style="font-size: 24px">Role: {{ role }}</h6>
 
     <input type="text" v-model="searchText" class="form-control" placeholder="Search...">
-      <br>
+    <br>
 
-    <div class="alert alert-info" role="alert" v-bind:style="{display}">{{ message }}</div>
+    <div class="alert alert-info" role="alert" v-bind:style="{ display }">{{ message }}</div>
 
     <table class="table">
       <thead>
@@ -57,10 +57,10 @@ export default {
     return {
       user: [],
       UserEmail: sessionStorage.getItem("User_email"),
-      display:'none',
-      message:'',
+      display: 'none',
+      message: '',
       role: sessionStorage.getItem("role"),
-      searchText:''
+      searchText: ''
     }
   },
   methods: {
@@ -68,18 +68,23 @@ export default {
       // this.$router.push("/home")
       Users.getUsers().then((res => {
         console.log(res)
-        this.user = res.data;
+        this.user = res.data.data;
       }))
         .catch((err) => { console.log(err) });
     },
 
     remove(user) {
-      Users.remove(user).then(() => {
-        sessionStorage.setItem("message3",true);
-        location.reload();
-        this.getUsers()
-      })
-        .catch((err) => { console.log(err) });
+      if (confirm("Delete Confirmation") == true) {
+        Users.remove(user).then(() => {
+          sessionStorage.setItem("message3", true);
+          location.reload();
+          this.getUsers()
+        })
+          .catch((err) => { console.log(err) });
+      }
+      else {
+        this.getEmployees()
+      }
     },
 
     logout() {
@@ -89,12 +94,14 @@ export default {
     },
 
     searchUser() {
-      Users.searchUser({params:{
+      Users.searchUser({
+        params: {
           keyword: this.searchText
-        }})
-      .then(response => {
-        this.user = response.data;
-      });
+        }
+      })
+        .then(response => {
+          this.user = response.data.data;
+        });
     }
   },
   watch: {
@@ -103,45 +110,39 @@ export default {
     }
   },
   mounted() {
-    if(sessionStorage.getItem("User_email") != null)
-    {
-      if(sessionStorage.getItem("role")=="ROLE_ADMIN")
+    if (sessionStorage.getItem("User_email") != null) {
+      if (sessionStorage.getItem("role") == "ROLE_SUPER_ADMIN")
         this.getUsers()
-      else
-      {
+      else {
         this.$router.push("/home")
         alert("you are not Admin!!")
       }
     }
-    else{
-        this.$router.push("/")
-        alert("you must login!!")
+    else {
+      this.$router.push("/")
+      alert("you must login!!")
     }
 
-      if(sessionStorage.getItem("message"))
-      {
-        this.display = 'block',
+    if (sessionStorage.getItem("message")) {
+      this.display = 'block',
         this.message = 'Edit successfully !!!'
-        sessionStorage.removeItem("message")
-      }
-      if(sessionStorage.getItem("message1"))
-      {
-        this.display = 'block',
+      sessionStorage.removeItem("message")
+    }
+    if (sessionStorage.getItem("message1")) {
+      this.display = 'block',
         this.message = 'Create successfully !!!'
-        sessionStorage.removeItem("message1")
-      }
-      if(sessionStorage.getItem("message2"))
-      {
-        this.display = 'block',
+      sessionStorage.removeItem("message1")
+    }
+    if (sessionStorage.getItem("message2")) {
+      this.display = 'block',
         this.message = 'Login successfully !!'
-        sessionStorage.removeItem("message2")
-      }
-      if(sessionStorage.getItem("message3"))
-      {
-        this.display = 'block',
+      sessionStorage.removeItem("message2")
+    }
+    if (sessionStorage.getItem("message3")) {
+      this.display = 'block',
         this.message = 'Delete successfully !!!'
-        sessionStorage.removeItem("message3")
-      }
+      sessionStorage.removeItem("message3")
+    }
   }
 
 }

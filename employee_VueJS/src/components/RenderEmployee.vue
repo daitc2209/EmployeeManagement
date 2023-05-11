@@ -12,7 +12,8 @@
     </div>
     <h6 class="display-6 " style="font-size: 24px">Role: {{ role }}</h6>
     <!-- <h1 class="text-center">Employees List</h1> -->
-    <div v-if="role === 'ROLE_ADMIN'"><a href="/homeAdmin" class="btn btn-primary" style="font-size: 24px; margin-bottom: 8px;"> <b>List User</b></a></div>
+    <div v-if="role === 'ROLE_SUPER_ADMIN'"><a href="/homeAdmin" class="btn btn-primary"
+        style="font-size: 24px; margin-bottom: 8px;"> <b>List User</b></a></div>
 
     <input type="text" v-model="searchText" class="form-control" placeholder="Search...">
     <br>
@@ -74,18 +75,24 @@ export default {
       this.$router.push("/home")
       EmployeeService.getEmployees().then((res => {
         console.log(res)
-        this.employees = res.data;
+        this.employees = res.data.data;
       }))
         .catch((err) => { console.log(err) });
     },
 
     remove(emp) {
-      EmployeeService.remove(emp).then(() => {
-        sessionStorage.setItem("message3", true);
-        location.reload();
+
+      if (confirm("Delete Confirmation") == true) {
+        EmployeeService.remove(emp).then(() => {
+          sessionStorage.setItem("message3", true);
+          location.reload();
+          this.getEmployees()
+        })
+          .catch((err) => { console.log(err) });
+      }
+      else {
         this.getEmployees()
-      })
-        .catch((err) => { console.log(err) });
+      }
     },
 
     logout() {
@@ -101,7 +108,7 @@ export default {
         }
       })
         .then(response => {
-          this.employees = response.data;
+          this.employees = response.data.data;
         });
     }
   },

@@ -56,8 +56,8 @@ public class SecurityConfig {
         http.authorizeHttpRequests()
                 .requestMatchers("/api/user/login","/api/employees/loginEmp").permitAll()
                 .requestMatchers("/api/employees/registerEmp").permitAll()
-                .requestMatchers("/api/user/**").hasAnyAuthority("ROLE_ADMIN")
-                .requestMatchers("/api/employees/**").hasAnyAuthority("ROLE_USER","ROLE_ADMIN")
+                .requestMatchers("/api/user/**").hasAnyAuthority("ROLE_SUPER_ADMIN")
+                .requestMatchers("/api/employees/**").hasAnyAuthority("ROLE_ADMIN","ROLE_SUPER_ADMIN")
                   .anyRequest().authenticated();
 
         // Add JWT authentication filter

@@ -67,7 +67,6 @@ public class JwtService {
         return Jwts.builder()
                 .setSubject(email)
                 .setIssuedAt(currentDate)
-//                .setNotBefore(BeforeTime)
                 .setExpiration(expiration)
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();

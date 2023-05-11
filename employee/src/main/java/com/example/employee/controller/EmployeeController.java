@@ -31,13 +31,13 @@ public class EmployeeController {
 
     //Render data
     @GetMapping("/getEmp")
-    public List<Employee> getEmployee(){
+    public ResponseEntity<Object> getEmployee(){
         return empService.getEmployees();
     }
 
     //Search data
     @GetMapping("/search")
-    public List<Employee> searchEmployees(@RequestParam String keyword) {
+    public ResponseEntity<Object> searchEmployees(@RequestParam String keyword) {
         return empService.SearchEmployees(keyword);
     }
 
@@ -49,7 +49,7 @@ public class EmployeeController {
 
     //Create
     @PostMapping(value = "/registerEmp")
-    public Employee createEmployee(@RequestBody Employee emp){
+    public ResponseEntity<Object> createEmployee(@RequestBody Employee emp){
         // ModelAttribute đóng vai trò là cầu lối giữa controller và View
         return empService.createEmp(emp);
     }
@@ -57,19 +57,31 @@ public class EmployeeController {
 
     //Update
     @GetMapping("/edit/{id}")
-    public Employee editEmpForm(@PathVariable(value = "id") Long id){
-            return empService.getEmpById(id);
+    public ResponseEntity<Object> editEmpForm(@PathVariable(value = "id") Long id){
+        Map map = new HashMap<>();
+        if (empService.getEmpById(id) == null)
+        {
+            map.put("error", "NOT_FOUND_ID");
+            map.put("responseCode", "0");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(map);
+        }
+        map.put("responseCode","1");
+        map.put("data",empService.getEmpById(id));
+        map.put("message","GET_EMP_BY_ID_SUCCESS");
+        return  ResponseEntity.ok(map);
     }
 
     @PutMapping("/{id}")
-    public Employee updateEmp(@PathVariable(value = "id") Long id,
+    public ResponseEntity<Object> updateEmp(@PathVariable(value = "id") Long id,
                               @RequestBody Employee emp){
-
+        Map map = new HashMap<>();
         //lấy dữ liệu từ database từ id
         Employee existEmp = empService.getEmpById(id);
-        if (existEmp.isDelete() == true )
+        if (existEmp.isDelete() == true || existEmp == null)
         {
-            throw new IllegalStateException("Employee doesn't exits");
+            map.put("error", "NOT_FOUND_ID");
+            map.put("responseCode", "0");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(map);
         }
         else {
             existEmp.setId(id);
@@ -84,17 +96,29 @@ public class EmployeeController {
             if (emp.getAddress() != null && emp.getAddress() != "")
                 existEmp.setAddress(emp.getAddress());
 
-            return empService.updateEmp(existEmp);
+            empService.updateEmp(existEmp);
+
+            map.put("responseCode","1");
+            map.put("data","");
+            map.put("message","EDIT_SUCCESS");
+            return ResponseEntity.ok(map);
         }
     }
 
     //Delete database
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Object> deleteEmployee(@PathVariable(value="id") Long id){
+        if (empService.getEmpById(id) == null)
+        {
+            Map<String,String> errorMap = new HashMap<>();
+            errorMap.put("error", "NOT_FOUND_ID");
+            errorMap.put("responseCode", "0");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMap);
+        }
         empService.deleteEmp(id);
-//        return new ResponseEntity<>("Xóa thành công", responseHeaders, HttpStatus.OK);
         Map<String,String> map = new HashMap<>();
-        map.put("message","Xoa thanh cong");
+        map.put("responseCode", "1");
+        map.put("message","DELETE_SUCCESS");
         return ResponseEntity.ok(map);
     }
 }

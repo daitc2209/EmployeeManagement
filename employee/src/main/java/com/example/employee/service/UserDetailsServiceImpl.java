@@ -1,7 +1,6 @@
 package com.example.employee.service;
 
 //import com.example.employee.model.MUserDetail;
-import com.example.employee.model.Employee;
 import com.example.employee.model.Users;
 import com.example.employee.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
 
@@ -40,44 +38,75 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return new User(user.getEmail(), user.getPassword(),authorities);
     }
 
-    public Users createUser(Users user) throws Exception {
+    public ResponseEntity<Object> createUser(Users user) throws Exception {
+        Map map = new HashMap<>();
         // Check whether username exists or not
         Optional<Users> userOptional = userRep.findUserByEmail(user.getEmail());
 
         if (userOptional.isPresent()) {
-            throw new IllegalStateException("email taken");
+            map.put("message","EMAIL_EXIST");
+            map.put("responseCode","0");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map);
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         if (user.getRole() == null || user.getRole() == "")
             user.setRole("ROLE_USER");
         // Save user
-        return userRep.save(user);
+        userRep.save(user);
+        map.put("message","CREATE_SUCCESS");
+        map.put("responseCode","1");
+        map.put("data","");
+        return ResponseEntity.ok(map);
     }
 
     public ResponseEntity<Object> login(String email, String password) throws Exception {
-        var user = userRep.findUserByEmail(email)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email not found"));
-        System.out.println(user);
+        Optional<Users> user = userRep.findUserByEmail(email);
         Map<String,String> m = new HashMap<>();
-        m.put("role", user.getRole());
-        if(user.isActive()) {
-            if (passwordEncoder.matches(password, user.getPassword())) {
-                m.put("token",jwtService.generateToken(user.getEmail()));
+        System.out.println(user);
+        if(!user.isPresent())
+        {
+            m.put("message","EMAIL_NOT_EXIST");
+            m.put("responseCode","0");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(m);
+        }
+        var u = user.get();
+        if(u.isActive()) {
+            if (passwordEncoder.matches(password, u.getPassword())) {
+                m.put("role", u.getRole());
+                m.put("token",jwtService.generateToken(u.getEmail()));
+                m.put("responseCode","1");
                 return ResponseEntity.ok(m);
             }
-            throw new Exception("Email details invalid.");
+            else {
+                m.put("message","PASSWORD_NOT_CORRECT");
+                m.put("responseCode","0");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(m);
+            }
         }
-        throw new Exception("Email has disactived.");
+        else
+        {
+            m.put("message","EMAIL_NOT_ACTIVE");
+            m.put("responseCode","0");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(m);
+        }
 
     }
 
-    public List<Users> getUser(){
-        return userRep.findAll();
+    public ResponseEntity<Object> getUser(){
+        Map map = new HashMap<>();
+        map.put("message","GET_LIST_SUCCESS");
+        map.put("responseCode","1");
+        map.put("data",userRep.findAll());
+        return ResponseEntity.ok(map);
     }
 
-    public List<Users> SearchUser(String keyword) {
-        return userRep.findAll(keyword);
+    public ResponseEntity<Object> SearchUser(String keyword) {
+        Map map = new HashMap<>();
+        map.put("message","SEARCH_SUCCESS");
+        map.put("responseCode","1");
+        map.put("data",userRep.findAll(keyword));
+        return ResponseEntity.ok(map);
     }
 
     public void deleteUser(Long id) {

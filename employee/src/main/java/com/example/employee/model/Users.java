@@ -1,6 +1,7 @@
 package com.example.employee.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 @Entity
@@ -12,7 +13,8 @@ public class Users {
     private Long id;
     @Column(name = "email", nullable = false, length = 45)
     private String email;
-//    @JsonIgnore
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = "password", nullable = false, length = 45)
     private String password;
     @Column(name = "name", nullable = false, length = 45)
