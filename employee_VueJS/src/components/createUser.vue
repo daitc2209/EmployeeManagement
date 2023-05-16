@@ -119,7 +119,7 @@ export default {
         if (sessionStorage.getItem("User_email") != null) {
             if (sessionStorage.getItem("role") != "ROLE_SUPER_ADMIN") {
                 this.$router.push("/home")
-                alert("you are not Admin!!")
+                alert("you are not SUPER ADMIN!!")
             }
         }
         else {

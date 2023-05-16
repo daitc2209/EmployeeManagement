@@ -34,17 +34,28 @@ public class JwtAuthFilter extends OncePerRequestFilter {
      if(token != null && jwtService.validateToken(token)) {
          // Get username from token
          String username = jwtService.getUsernameFromToken(token);
+         String role = jwtService.getRoleFromToken(token);
 
          // Get user details
          UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+         if (userDetails != null && userDetails.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals(role)))
+         {
+             // Create authentication object
+             var auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+             auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+             // Set user to spring context
+             SecurityContextHolder.getContext()
+                     .setAuthentication(auth);
+         }
 
          // Create authentication object
-         var auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-         auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
-         // Set user to spring context
-         SecurityContextHolder.getContext()
-               .setAuthentication(auth);
+//         var auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+//         auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+//
+//         // Set user to spring context
+//         SecurityContextHolder.getContext()
+//               .setAuthentication(auth);
      }
 
      filterChain.doFilter(request, response);

@@ -73,8 +73,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         var u = user.get();
         if(u.isActive()) {
             if (passwordEncoder.matches(password, u.getPassword())) {
-                m.put("role", u.getRole());
                 m.put("token",jwtService.generateToken(u.getEmail()));
+                m.put("role", jwtService.getRoleFromToken(jwtService.generateToken(u.getEmail())));
                 m.put("responseCode","1");
                 return ResponseEntity.ok(m);
             }

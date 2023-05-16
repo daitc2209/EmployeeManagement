@@ -138,7 +138,7 @@ export default {
         this.getUserById(this.$route.params.id)
       else {
         this.$router.push("/")
-        alert("you must login!!")
+        alert("you are not SUPER ADMIN!!")
       }
     }
     else {

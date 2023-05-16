@@ -8,6 +8,7 @@ import org.aspectj.weaver.ast.Var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -26,12 +27,14 @@ public class UserController {
 
     //Search data
     @GetMapping("/search")
+//    @PreAuthorize("hasAnyAuthority('ROLE_SUPER_ADMIN')")
     public ResponseEntity<Object> searchEmployees(@RequestParam String keyword) {
         return userDetailsService.SearchUser(keyword);
     }
 
     //CREATE
     @PostMapping("/createUser")
+//    @PreAuthorize("hasAnyAuthority('ROLE_SUPER_ADMIN')")
     public ResponseEntity<Object> createUser(@RequestBody Users req) throws Exception {
         System.out.println(req.toString());
         return userDetailsService.createUser(req);
@@ -45,6 +48,7 @@ public class UserController {
 
     //READ
     @GetMapping(value = "/getuser")
+//    @PreAuthorize("hasAnyAuthority('ROLE_SUPER_ADMIN')")
     public ResponseEntity<Object> getUser(){
         return userDetailsService.getUser();
     }
@@ -52,6 +56,7 @@ public class UserController {
 
     //DELETE
     @DeleteMapping("/delete/{id}")
+//    @PreAuthorize("hasAnyAuthority('ROLE_SUPER_ADMIN')")
     public ResponseEntity<Object> deleteUser(@PathVariable(value="id") Long id){
         if (userDetailsService.getUserById(id) == null)
         {
@@ -69,6 +74,7 @@ public class UserController {
 
     //UPDATE
     @GetMapping("/edit/{id}")
+//    @PreAuthorize("hasAnyAuthority('ROLE_SUPER_ADMIN')")
     public ResponseEntity<Object> editUserForm(@PathVariable(value = "id") Long id){
         Map map = new HashMap<>();
         if (userDetailsService.getUserById(id) == null)
@@ -84,6 +90,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
+//    @PreAuthorize("hasAnyAuthority('ROLE_SUPER_ADMIN')")
     public ResponseEntity<Object> updateUser(@PathVariable(value = "id") Long id,
                               @RequestBody Users u){
 
