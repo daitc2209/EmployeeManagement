@@ -71,22 +71,22 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(m);
         }
         var u = user.get();
-        if(u.isActive()) {
-            if (passwordEncoder.matches(password, u.getPassword())) {
+        if(passwordEncoder.matches(password, u.getPassword())) {
+            if (u.isActive()) {
                 m.put("token",jwtService.generateToken(u.getEmail()));
                 m.put("role", jwtService.getRoleFromToken(jwtService.generateToken(u.getEmail())));
                 m.put("responseCode","1");
                 return ResponseEntity.ok(m);
             }
             else {
-                m.put("message","PASSWORD_NOT_CORRECT");
+                m.put("message","EMAIL_NOT_ACTIVE");
                 m.put("responseCode","0");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(m);
             }
         }
         else
         {
-            m.put("message","EMAIL_NOT_ACTIVE");
+            m.put("message","PASSWORD_NOT_CORRECT");
             m.put("responseCode","0");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(m);
         }

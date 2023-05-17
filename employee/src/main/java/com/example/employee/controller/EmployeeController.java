@@ -31,12 +31,14 @@ public class EmployeeController {
 
     //Render data
     @GetMapping("/getEmp")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_SUPER_ADMIN')")
     public ResponseEntity<Object> getEmployee(){
         return empService.getEmployees();
     }
 
     //Search data
     @GetMapping("/search")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_SUPER_ADMIN')")
     public ResponseEntity<Object> searchEmployees(@RequestParam String keyword) {
         return empService.SearchEmployees(keyword);
     }
@@ -57,6 +59,7 @@ public class EmployeeController {
 
     //Update
     @GetMapping("/edit/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_SUPER_ADMIN')")
     public ResponseEntity<Object> editEmpForm(@PathVariable(value = "id") Long id){
         Map map = new HashMap<>();
         if (empService.getEmpById(id) == null)
@@ -72,6 +75,7 @@ public class EmployeeController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_SUPER_ADMIN')")
     public ResponseEntity<Object> updateEmp(@PathVariable(value = "id") Long id,
                               @RequestBody Employee emp){
         Map map = new HashMap<>();
@@ -107,6 +111,7 @@ public class EmployeeController {
 
     //Delete database
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_SUPER_ADMIN')")
     public ResponseEntity<Object> deleteEmployee(@PathVariable(value="id") Long id){
         if (empService.getEmpById(id) == null)
         {
