@@ -1,14 +1,10 @@
 package com.example.employee.service;
 
-import com.example.employee.model.Employee;
 import com.example.employee.model.Users;
-import com.example.employee.repository.EmployeeRepository;
 import com.example.employee.repository.UserRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;

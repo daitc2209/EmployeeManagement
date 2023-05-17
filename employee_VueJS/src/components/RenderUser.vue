@@ -115,7 +115,7 @@ export default {
         this.getUsers()
       else {
         this.$router.push("/home")
-        alert("you are not Admin!!")
+        alert("you are not SUPER Admin!!")
       }
     }
     else {

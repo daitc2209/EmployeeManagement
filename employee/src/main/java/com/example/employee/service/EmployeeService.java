@@ -2,16 +2,12 @@ package com.example.employee.service;
 
 import com.example.employee.model.Employee;
 import com.example.employee.repository.EmployeeRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.time.LocalDate;
-import java.time.Period;
 import java.util.*;
 
 @Service
