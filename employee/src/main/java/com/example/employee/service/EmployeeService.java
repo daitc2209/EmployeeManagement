@@ -79,7 +79,6 @@ public class EmployeeService {
             throw new IllegalStateException("employee with id " + empId + " doesn't exists");
         }
         Employee emp = empRepository.findUserById(empId);
-        emp.setActive(false);
         emp.setDelete(true);
         empRepository.save(emp);
     }

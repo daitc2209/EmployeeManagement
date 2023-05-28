@@ -97,7 +97,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new IllegalStateException("employee with id " + id + " doesn't exists");
         }
         var u = userRep.findById(id).get();
-        u.setActive(false);
         u.setDelete(true);
         userRep.save(u);
     }
