@@ -1,4 +1,5 @@
 package com.example.employee.controller;
+import com.example.employee.config.ResponseHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -53,17 +54,12 @@ public class EmployeeController {
     @GetMapping("/edit/{id}")
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_SUPER_ADMIN')")
     public ResponseEntity<Object> editEmpForm(@PathVariable(value = "id") Long id){
-        Map map = new HashMap<>();
         if (empService.getEmpById(id) == null)
         {
-            map.put("error", "NOT_FOUND_ID");
-            map.put("responseCode", "0");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(map);
+            return ResponseHandler.responseBuilder("NOT_FOUND_ID", HttpStatus.NOT_FOUND, "",04);
         }
-        map.put("responseCode","1");
-        map.put("data",empService.getEmpById(id));
-        map.put("message","GET_EMP_BY_ID_SUCCESS");
-        return  ResponseEntity.ok(map);
+        return ResponseHandler.responseBuilder("GET_EMP_BY_ID_SUCCESS", HttpStatus.OK, empService.getEmpById(id),00);
+
     }
 
     @PutMapping("/{id}")
@@ -75,9 +71,7 @@ public class EmployeeController {
         Employee existEmp = empService.getEmpById(id);
         if (existEmp.isDelete() == true || existEmp == null)
         {
-            map.put("error", "NOT_FOUND_ID");
-            map.put("responseCode", "0");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(map);
+            return ResponseHandler.responseBuilder("NOT_FOUND_ID", HttpStatus.NOT_FOUND, "",04);
         }
         else {
             existEmp.setId(id);
@@ -94,10 +88,7 @@ public class EmployeeController {
 
             empService.updateEmp(existEmp);
 
-            map.put("responseCode","1");
-            map.put("data","");
-            map.put("message","EDIT_SUCCESS");
-            return ResponseEntity.ok(map);
+            return ResponseHandler.responseBuilder("EDIT_SUCCESS", HttpStatus.OK, "",00);
         }
     }
 
@@ -107,15 +98,9 @@ public class EmployeeController {
     public ResponseEntity<Object> deleteEmployee(@PathVariable(value="id") Long id){
         if (empService.getEmpById(id) == null)
         {
-            Map<String,String> errorMap = new HashMap<>();
-            errorMap.put("error", "NOT_FOUND_ID");
-            errorMap.put("responseCode", "0");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMap);
+            return ResponseHandler.responseBuilder("NOT_FOUND_ID", HttpStatus.NOT_FOUND, "",04);
         }
         empService.deleteEmp(id);
-        Map<String,String> map = new HashMap<>();
-        map.put("responseCode", "1");
-        map.put("message","DELETE_SUCCESS");
-        return ResponseEntity.ok(map);
+        return ResponseHandler.responseBuilder("DELETE_SUCCESS", HttpStatus.OK, "",00);
     }
 }

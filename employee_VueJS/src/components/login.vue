@@ -73,11 +73,11 @@ import Users from '../service/Users';
                     console.log(res.data)
                     if(res.data != null){
                         sessionStorage.clear();
-                        sessionStorage.setItem("jwtToken", res.data.token);
-                        sessionStorage.setItem("role", res.data.role);
+                        sessionStorage.setItem("jwtToken", res.data.data.token);
+                        sessionStorage.setItem("role", res.data.data.role);
                         sessionStorage.setItem("User_email", this.User.email);
                         sessionStorage.setItem("message2",true)
-                        axios.defaults.headers.Authorization = `Bearer ${res.data.token}`;
+                        axios.defaults.headers.Authorization = `Bearer ${res.data.data.token}`;
                         this.$router.push("/home")
                     }
                 })

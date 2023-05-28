@@ -1,5 +1,6 @@
 package com.example.employee.service;
 
+import com.example.employee.config.ResponseHandler;
 import com.example.employee.model.Employee;
 import com.example.employee.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,20 +24,12 @@ public class EmployeeService {
     private JwtService jwtService;
 
     public ResponseEntity<Object> SearchEmployees(String keyword) {
-        Map map = new HashMap<>();
-        map.put("message","SEARCH_SUCCESS");
-        map.put("responseCode","1");
-        map.put("data",empRepository.findAll(keyword));
-        return ResponseEntity.ok(map);
+        return ResponseHandler.responseBuilder("SEARCH_SUCCESS", HttpStatus.OK, empRepository.findAll(keyword),00);
     }
 
     //READ
     public ResponseEntity<Object> getEmployees() {
-        Map map = new HashMap<>();
-        map.put("message","GET_LIST_SUCCESS");
-        map.put("responseCode","1");
-        map.put("data",empRepository.findEmployeeByEmailNotIsDelete());
-        return ResponseEntity.ok(map);
+        return ResponseHandler.responseBuilder("GET_LIST_SUCCESS", HttpStatus.OK, empRepository.findEmployeeByEmailNotIsDelete(),00);
     }
 
     //Login
@@ -44,27 +37,20 @@ public class EmployeeService {
         Employee emp = empRepository.findEmployeeByEmail1(email);
         Map<String,String> m = new HashMap<>();
         if (emp == null){   //báo xem có tồn tại email trùng ko
-            m.put("message","EMAIL_NOT_EXIST");
-            m.put("responseCode","0");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(m);
+            return ResponseHandler.responseBuilder("EMAIL_NOT_EXIST", HttpStatus.BAD_REQUEST, "",01);
         }
         if(emp.isActive()) {
             if (passwordEncoder.matches(password, emp.getPassword())) {
-                m.put("responseCode","1");
                 m.put("token",jwtService.generateToken(emp.getemail_id()));
-                return ResponseEntity.ok(m);
+                return ResponseHandler.responseBuilder("Login_Success", HttpStatus.OK, m,00);
             }
             else {
-                m.put("message","PASSWORD_NOT_CORRECT");
-                m.put("responseCode","0");
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(m);
+                return ResponseHandler.responseBuilder("PASSWORD_NOT_CORRECT", HttpStatus.BAD_REQUEST, "",02);
             }
         }
         else
         {
-            m.put("message","EMAIL_NOT_ACTIVE");
-            m.put("responseCode","0");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(m);
+            return ResponseHandler.responseBuilder("EMAIL_NOT_ACTIVE", HttpStatus.BAD_REQUEST, "",03);
         }
 
     }
@@ -75,9 +61,7 @@ public class EmployeeService {
 
         Optional<Employee> empOptional = empRepository.findEmployeeByEmail(emp.getemail_id());
         if (empOptional.isPresent()){   //báo xem có tồn tại email trùng ko
-            map.put("message","EMAIL_EXIST");
-            map.put("responseCode","0");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map);
+            return ResponseHandler.responseBuilder("EMAIL_NOT_EXIST", HttpStatus.BAD_REQUEST, "",01);
         }
         emp.setDelete(false);
         emp.setActive(true);
@@ -85,10 +69,7 @@ public class EmployeeService {
         System.out.println(emp.toString());
         empRepository.save(emp);
 
-        map.put("responseCode","1");
-        map.put("data","");
-        map.put("message","REGISTER_SUCCESS");
-        return ResponseEntity.ok(map);
+        return ResponseHandler.responseBuilder("REGISTER_SUCCESS", HttpStatus.OK, "",00);
     }
 
     //DELETE

@@ -1,5 +1,6 @@
 package com.example.employee.service;
 
+import com.example.employee.config.ResponseHandler;
 import com.example.employee.model.Users;
 import com.example.employee.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,9 +44,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         Optional<Users> userOptional = userRep.findUserByEmail(user.getEmail());
 
         if (userOptional.isPresent()) {
-            map.put("message","EMAIL_EXIST");
-            map.put("responseCode","0");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map);
+            return ResponseHandler.responseBuilder("EMAIL_NOT_EXIST", HttpStatus.BAD_REQUEST, "",01);
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -53,10 +52,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             user.setRole("ROLE_USER");
         // Save user
         userRep.save(user);
-        map.put("message","CREATE_SUCCESS");
-        map.put("responseCode","1");
-        map.put("data","");
-        return ResponseEntity.ok(map);
+        return ResponseHandler.responseBuilder("CREATE_SUCCESS", HttpStatus.OK, "",00);
     }
 
     public ResponseEntity<Object> login(String email, String password) throws Exception {
@@ -65,47 +61,34 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         System.out.println(user);
         if(!user.isPresent())
         {
-            m.put("message","EMAIL_NOT_EXIST");
-            m.put("responseCode","0");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(m);
+            return ResponseHandler.responseBuilder("EMAIL_NOT_EXIST", HttpStatus.BAD_REQUEST, "",01);
         }
         var u = user.get();
         if(passwordEncoder.matches(password, u.getPassword())) {
             if (u.isActive()) {
                 m.put("token",jwtService.generateToken(u.getEmail()));
                 m.put("role", jwtService.getRoleFromToken(jwtService.generateToken(u.getEmail())));
-                m.put("responseCode","1");
-                return ResponseEntity.ok(m);
+                return ResponseHandler.responseBuilder("Login_Success", HttpStatus.OK, m,00);
             }
             else {
-                m.put("message","EMAIL_NOT_ACTIVE");
-                m.put("responseCode","0");
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(m);
+                return ResponseHandler.responseBuilder("EMAIL_NOT_ACTIVE", HttpStatus.BAD_REQUEST, "",03);
             }
         }
         else
         {
-            m.put("message","PASSWORD_NOT_CORRECT");
-            m.put("responseCode","0");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(m);
+            return ResponseHandler.responseBuilder("PASSWORD_NOT_CORRECT", HttpStatus.BAD_REQUEST, "",02);
         }
 
     }
 
     public ResponseEntity<Object> getUser(){
-        Map map = new HashMap<>();
-        map.put("message","GET_LIST_SUCCESS");
-        map.put("responseCode","1");
-        map.put("data",userRep.findAll());
-        return ResponseEntity.ok(map);
+        return ResponseHandler.responseBuilder("GET_LIST_SUCCESS", HttpStatus.OK, userRep.findAll(),00);
+
     }
 
     public ResponseEntity<Object> SearchUser(String keyword) {
-        Map map = new HashMap<>();
-        map.put("message","SEARCH_SUCCESS");
-        map.put("responseCode","1");
-        map.put("data",userRep.findAll(keyword));
-        return ResponseEntity.ok(map);
+        return ResponseHandler.responseBuilder("SEARCH_SUCCESS", HttpStatus.OK, userRep.findAll(keyword),00);
+
     }
 
     public void deleteUser(Long id) {

@@ -1,5 +1,6 @@
 package com.example.employee.controller;
 
+import com.example.employee.config.ResponseHandler;
 import com.example.employee.model.Users;
 import com.example.employee.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,16 +55,11 @@ public class UserController {
     public ResponseEntity<Object> deleteUser(@PathVariable(value="id") Long id){
         if (userDetailsService.getUserById(id) == null)
         {
-            Map<String,String> errorMap = new HashMap<>();
-            errorMap.put("error", "NOT_FOUND_ID");
-            errorMap.put("responseCode", "0");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMap);
+            return ResponseHandler.responseBuilder("NOT_FOUND_ID", HttpStatus.NOT_FOUND, "",04);
+
         }
         userDetailsService.deleteUser(id);
-        Map<String,String> map = new HashMap<>();
-        map.put("responseCode", "1");
-        map.put("message","DELETE_SUCCESS");
-        return ResponseEntity.ok(map);
+        return ResponseHandler.responseBuilder("DELETE_SUCCESS", HttpStatus.OK, "",00);
     }
 
     //UPDATE
@@ -73,14 +69,10 @@ public class UserController {
         Map map = new HashMap<>();
         if (userDetailsService.getUserById(id) == null)
         {
-            map.put("error", "NOT_FOUND_ID");
-            map.put("responseCode", "0");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(map);
+            return ResponseHandler.responseBuilder("NOT_FOUND_ID", HttpStatus.NOT_FOUND, "",04);
         }
-        map.put("responseCode","1");
-        map.put("data",userDetailsService.getUserById(id));
-        map.put("message","GET_USER_BY_ID_SUCCESS");
-        return  ResponseEntity.ok(map);
+        return ResponseHandler.responseBuilder("GET_EMP_BY_ID_SUCCESS", HttpStatus.OK, userDetailsService.getUserById(id),00);
+
     }
 
     @PutMapping("/{id}")
@@ -90,13 +82,11 @@ public class UserController {
 
         //lấy dữ liệu từ database từ id
         Users existUser = userDetailsService.getUserById(id);
-        Map<String,String> Map = new HashMap<>();
 
         if (existUser.isDelete() == true || existUser == null )
         {
-            Map.put("error", "NOT_FOUND_ID");
-            Map.put("responseCode", "0");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map);
+            return ResponseHandler.responseBuilder("NOT_FOUND_ID", HttpStatus.NOT_FOUND, "",04);
+
         }
         else {
             if(u.getName() != null && u.getName() != "")
@@ -108,11 +98,7 @@ public class UserController {
             existUser.setActive(u.isActive());
 
             userDetailsService.updateUser(existUser);
-            Map.put("responseCode","1");
-            Map.put("data","");
-            Map.put("message","EDIT_SUCCESS");
-
-            return ResponseEntity.ok(Map);
+            return ResponseHandler.responseBuilder("EDIT_SUCCESS", HttpStatus.OK, "",00);
         }
     }
 }

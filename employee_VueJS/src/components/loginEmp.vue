@@ -78,7 +78,7 @@ export default {
                     console.log(res.data)
                     if (res.data != null) {
                         sessionStorage.clear();
-                        sessionStorage.setItem("jwtToken", res.data.token);
+                        sessionStorage.setItem("jwtToken", res.data.data.token);
                         sessionStorage.setItem("Employee_email", this.Employee.email_id);
                         this.$router.push("/homeEmp")
                     }
