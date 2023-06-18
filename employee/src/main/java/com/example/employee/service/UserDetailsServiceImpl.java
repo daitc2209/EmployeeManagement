@@ -3,6 +3,7 @@ package com.example.employee.service;
 import com.example.employee.config.ResponseHandler;
 import com.example.employee.model.Users;
 import com.example.employee.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
+@Transactional
 public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private UserRepository userRep;
